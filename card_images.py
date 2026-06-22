@@ -34,13 +34,26 @@ base_maker.font_family('DejaVu Sans',
 base_maker.font_name('Number', family = 'DejaVu Sans', size = 64)
 
 
-# Make one card image
+# Make card images
 
-def card_image(num: int, cols: list[bool]):
+def card_image(num: int, colours: list[bool]):
     """
     Make a card image with the given number and each stripe present or not.
     """
     maker = base_maker.copy()
+
+    # Create each stripe
+
+    distance_mm = 20
+
+    for idx, include in enumerate(colours):
+        if not(include): continue
+
+        height_mm = (idx - 1) * distance_mm + (maker.height_mm / 2)
+        maker.paste(strip_ims[idx],
+                    center = maker.width_mm / 2,
+                    middle = height_mm,
+                    )
 
     maker.text(text   = str(num),
                center = maker.width / 2,
@@ -51,5 +64,26 @@ def card_image(num: int, cols: list[bool]):
     return maker.image()
 
 
-card_images = [card_image(2, []),
+def strip_image(idx: int):
+    """
+    Make a stripe image for this index.
+    """
+    thickness_px = int(base_maker.to_px(8))
+
+    im = Image.new(mode = 'RGBA',
+                   size = (base_maker.width_with_gutters_px, thickness_px),
+                   color = stripe_colours[idx],
+                   )
+    return im
+
+
+# Assemble the cards
+
+
+strip_ims = [strip_image(0),
+             strip_image(1),
+             strip_image(2),
+             ]
+
+card_images = [card_image(2, [True, True, True]),
                ]
