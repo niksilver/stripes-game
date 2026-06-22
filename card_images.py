@@ -11,6 +11,7 @@ asset_dir      = 'assets/'
 stripe_colours  = [(212,   0, 212),    # Magenta
                    (212, 212,   0),    # Yellow
                    (  0, 192,   0),    # Green
+                   ( 96,  96, 255),    # Blue
                    ]
 
 
@@ -29,7 +30,7 @@ border_size_mm = 3
 # Fonts
 
 base_maker.font_family('DejaVu Sans',
-                       file = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+                       file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
                        )
 base_maker.font_name('Number', family = 'DejaVu Sans', size = 64)
 
@@ -49,7 +50,7 @@ def card_image(num: int, colours: list[bool]):
     for idx, include in enumerate(colours):
         if not(include): continue
 
-        height_mm = (idx - 1) * distance_mm + (maker.height_mm / 2)
+        height_mm = (idx - 1.5) * distance_mm + (maker.height_mm / 2)
         maker.paste(strip_ims[idx],
                     center = maker.width_mm / 2,
                     middle = height_mm,
@@ -83,7 +84,8 @@ def strip_image(idx: int):
 strip_ims = [strip_image(0),
              strip_image(1),
              strip_image(2),
+             strip_image(3),
              ]
 
-card_images = [card_image(2, [True, True, True]),
+card_images = [card_image(2, [True, True, True, True]),
                ]
