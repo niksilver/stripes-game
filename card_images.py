@@ -6,13 +6,12 @@ from PIL import ImageChops
 from gamehelper.card_maker import CardMaker
 
 
-asset_dir      = 'assets/'
-
-stripe_colours  = [(212,   0, 212),    # Magenta
-                   (212, 212,   0),    # Yellow
-                   (  0, 192,   0),    # Green
-                   ( 96,  96, 255),    # Blue
-                   ]
+stripe_colours = [(212,   0, 212),    # Magenta
+                  (212, 212,   0),    # Yellow
+                  (  0, 192,   0),    # Green
+                  ( 96,  96, 255),    # Blue
+                  ]
+COL_COUNT      = len(stripe_colours)
 
 
 # Base card
@@ -37,7 +36,7 @@ base_maker.font_name('Number', family = 'DejaVu Sans', size = 64)
 
 # Make card images
 
-def card_image(num: int, colours: list[bool]):
+def card_image(num: int, colours: list[bool]) -> Image:
     """
     Make a card image with the given number and each stripe present or not.
     """
@@ -87,5 +86,21 @@ strip_ims = [strip_image(0),
              strip_image(3),
              ]
 
-card_images = [card_image(2, [True, True, True, True]),
-               ]
+
+def one_stripe_cards(count_of_each: int) -> list[Image]:
+    """
+    Return a list of images of one-stripe cards.
+    """
+    ims = []
+
+    # Create one image of each card
+
+    for col in range(0, COL_COUNT):
+        cols = [(i == col) for i in range(0, COL_COUNT)]
+        im = card_image(4, cols)
+        ims.append(im)
+
+    return ims * count_of_each
+
+
+card_images = one_stripe_cards(2)
