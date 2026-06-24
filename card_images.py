@@ -31,7 +31,7 @@ border_size_mm = 3
 base_maker.font_family('DejaVu Sans',
                        file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
                        )
-base_maker.font_name('Number', family = 'DejaVu Sans', size = 64)
+base_maker.font_name('Number', family = 'DejaVu Sans', size = 48)
 
 
 # Make card images
@@ -44,7 +44,7 @@ def card_image(num: int, colours: list[bool]) -> Image:
 
     # Create each stripe
 
-    distance_mm = 20
+    distance_mm = 12
 
     for idx, include in enumerate(colours):
         if not(include): continue
@@ -136,7 +136,20 @@ def three_stripe_cards(count_of_each: int) -> list[Image]:
     return ims * count_of_each
 
 
+def four_stripe_cards(count_of_each: int) -> list[Image]:
+    """
+    Return a list of images of four-stripe cards.
+    """
+
+    # Create the iamge
+
+    im = card_image(-1, [True] * COL_COUNT)
+
+    return [im] * count_of_each
+
+
 card_images = []
 card_images.extend(one_stripe_cards(4))
 card_images.extend(two_stripe_cards(3))
 card_images.extend(three_stripe_cards(2))
+card_images.extend(four_stripe_cards(4))
