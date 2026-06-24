@@ -34,9 +34,9 @@ base_maker.font_family('DejaVu Sans',
 base_maker.font_name('Number', family = 'DejaVu Sans', size = 48)
 
 
-# Make card images
+# Make cards and their images
 
-def card_image(num: int, colours: list[bool]) -> Image:
+def card(num: int, colours: list[bool]) -> CardMaker:
     """
     Make a card image with the given number and each stripe present or not.
     """
@@ -61,7 +61,7 @@ def card_image(num: int, colours: list[bool]) -> Image:
                font   = 'Number',
                )
 
-    return maker.image()
+    return maker
 
 
 def strip_image(idx: int):
@@ -97,7 +97,7 @@ def one_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i == col) for i in range(0, COL_COUNT)]
-        im = card_image(4, cols)
+        im = card(4, cols).image()
         ims.append(im)
 
     return ims * count_of_each
@@ -114,7 +114,7 @@ def two_stripe_cards(count_of_each: int) -> list[Image]:
     for col1 in range(0, COL_COUNT - 1):
         for col2 in range(col1 + 1, COL_COUNT):
             cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
-            im = card_image(2, cols)
+            im = card(2, cols).image()
             ims.append(im)
 
     return ims * count_of_each
@@ -130,7 +130,7 @@ def three_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i != col) for i in range(0, COL_COUNT)]
-        im = card_image(1, cols)
+        im = card(1, cols).image()
         ims.append(im)
 
     return ims * count_of_each
@@ -143,10 +143,31 @@ def four_stripe_cards(count_of_each: int) -> list[Image]:
 
     # Create the iamge
 
-    im = card_image(-1, [True] * COL_COUNT)
+    crd = card(-1, [True] * COL_COUNT)
+    im  = add_corners(crd).image()
 
     return [im] * count_of_each
 
+
+def add_corners(card: CardMaker) -> CardMaker:
+    """
+    Take a card and add into the top corners a smaller version of itself.
+    """
+    x = int(card.width_px / 6)
+    y = int(card.height_px / 6)
+    small_im = card.image().resize((x, y))
+    card.paste(small_im,
+               left = card.gutter_mm,
+               top  = card.gutter_mm,
+               )
+    card.paste(small_im,
+               right = card.width_mm - card.gutter_mm,
+               top   = card.gutter_mm,
+               )
+
+    return card
+
+# Assemble all the card images
 
 card_images = []
 card_images.extend(one_stripe_cards(4))
