@@ -103,4 +103,23 @@ def one_stripe_cards(count_of_each: int) -> list[Image]:
     return ims * count_of_each
 
 
-card_images = one_stripe_cards(2)
+def two_stripe_cards(count_of_each: int) -> list[Image]:
+    """
+    Return a list of images of two-stripe cards.
+    """
+    ims = []
+
+    # Create one image of each card
+
+    for col1 in range(0, COL_COUNT - 1):
+        for col2 in range(col1 + 1, COL_COUNT):
+            cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
+            im = card_image(2, cols)
+            ims.append(im)
+
+    return ims * count_of_each
+
+
+card_images = []
+card_images.extend(one_stripe_cards(4))
+card_images.extend(two_stripe_cards(3))
