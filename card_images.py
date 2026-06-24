@@ -97,7 +97,8 @@ def one_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i == col) for i in range(0, COL_COUNT)]
-        im = card(4, cols).image()
+        crd  = card(4, cols)
+        im   = add_corners(crd).image()
         ims.append(im)
 
     return ims * count_of_each
@@ -114,7 +115,8 @@ def two_stripe_cards(count_of_each: int) -> list[Image]:
     for col1 in range(0, COL_COUNT - 1):
         for col2 in range(col1 + 1, COL_COUNT):
             cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
-            im = card(2, cols).image()
+            crd  = card(2, cols)
+            im   = add_corners(crd).image()
             ims.append(im)
 
     return ims * count_of_each
@@ -130,7 +132,8 @@ def three_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i != col) for i in range(0, COL_COUNT)]
-        im = card(1, cols).image()
+        crd  = card(1, cols)
+        im   = add_corners(crd).image()
         ims.append(im)
 
     return ims * count_of_each
