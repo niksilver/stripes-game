@@ -24,6 +24,8 @@ base_maker = CardMaker(width    = 62,
                        )
 
 border_size_mm = 3
+mid_mm         = (base_maker.height_mm / 2) + 10    # Middle of stripes (main)
+mid_top_mm     = 12                                 # Middle of stripes (top, small)
 
 
 # Fonts
@@ -31,7 +33,8 @@ border_size_mm = 3
 base_maker.font_family('DejaVu Sans',
                        file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
                        )
-base_maker.font_name('Number', family = 'DejaVu Sans', size = 48)
+base_maker.font_name('Number',     family = 'DejaVu Sans', size = 48)
+base_maker.font_name('Number top', family = 'DejaVu Sans', size = 12)
 
 
 # Make cards and their images
@@ -44,46 +47,82 @@ def card(num: int, colours: list[bool]) -> CardMaker:
 
     # Create each stripe
 
-    distance_mm = 12
-
     for idx, include in enumerate(colours):
         if not(include): continue
+        paste_stripes(maker, idx)
 
-        height_mm = (idx - 1.5) * distance_mm + (maker.height_mm / 2)
-        maker.paste(strip_ims[idx],
-                    center = maker.width_mm / 2,
-                    middle = height_mm,
-                    )
 
-    maker.text(text   = str(num),
+    maker.text(text   = str(num),    # Main
                center = maker.width / 2,
-               middle = maker.height / 2,
+               middle = mid_mm,
                font   = 'Number',
+               )
+    maker.text(text   = str(num),    # Top left
+               center = 8,
+               middle = mid_top_mm,
+               font   = 'Number top',
+               )
+    maker.text(text   = str(num),    # Top left
+               center = maker.width - 8,
+               middle = mid_top_mm,
+               font   = 'Number top',
                )
 
     return maker
 
 
-def strip_image(idx: int):
+def paste_stripes(maker: CardMaker, idx: int):
     """
-    Make a stripe image for this index.
+    Paste the stripes of a given index onto the card.
+    Will include the large (main) and small (top) stripes.
     """
-    thickness_px = int(base_maker.to_px(8))
 
-    im = Image.new(mode = 'RGBA',
-                   size = (base_maker.width_with_gutters_px, thickness_px),
-                   color = stripe_colours[idx],
-                   )
-    return im
+    # The main stripe
+
+    mid_separation_mm = 12
+    y_mm              = (idx - 1.5) * mid_separation_mm + mid_mm
+
+    maker.paste(strip_ims[idx][0],
+                center = maker.width_mm / 2,
+                middle = y_mm,
+                )
+
+    # The small stripe
+
+    mid_separation_mm = 4
+    y_mm              = (idx - 1.5) * mid_separation_mm + mid_top_mm
+
+    maker.paste(strip_ims[idx][1],
+                center = maker.width_mm / 2,
+                middle = y_mm,
+                )
+
+
+def stripe_images(idx: int) -> (Image, Image):
+    """
+    Make two stripe image for this index - a main one and a small one.
+    """
+    thickness_px       = int(base_maker.to_px(8))
+    thickness_small_px = int(base_maker.to_px(2.3))
+
+    im0 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_px),
+                    color = stripe_colours[idx],
+                    )
+    im1 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_small_px),
+                    color = stripe_colours[idx],
+                    )
+    return (im0, im1)
 
 
 # Assemble the cards
 
 
-strip_ims = [strip_image(0),
-             strip_image(1),
-             strip_image(2),
-             strip_image(3),
+strip_ims = [stripe_images(0),    # [main_image, small_image]
+             stripe_images(1),
+             stripe_images(2),
+             stripe_images(3),
              ]
 
 
@@ -97,8 +136,7 @@ def one_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i == col) for i in range(0, COL_COUNT)]
-        crd  = card(4, cols)
-        im   = add_corners(crd).image()
+        im   = card(4, cols).image()
         ims.append(im)
 
     return ims * count_of_each
@@ -115,8 +153,7 @@ def two_stripe_cards(count_of_each: int) -> list[Image]:
     for col1 in range(0, COL_COUNT - 1):
         for col2 in range(col1 + 1, COL_COUNT):
             cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
-            crd  = card(2, cols)
-            im   = add_corners(crd).image()
+            im   = card(2, cols).image()
             ims.append(im)
 
     return ims * count_of_each
@@ -132,8 +169,7 @@ def three_stripe_cards(count_of_each: int) -> list[Image]:
 
     for col in range(0, COL_COUNT):
         cols = [(i != col) for i in range(0, COL_COUNT)]
-        crd  = card(1, cols)
-        im   = add_corners(crd).image()
+        im   = card(1, cols).image()
         ims.append(im)
 
     return ims * count_of_each
@@ -147,28 +183,9 @@ def four_stripe_cards(count_of_each: int) -> list[Image]:
     # Create the iamge
 
     crd = card(-1, [True] * COL_COUNT)
-    im  = add_corners(crd).image()
+    im  = crd.image()
 
     return [im] * count_of_each
-
-
-def add_corners(card: CardMaker) -> CardMaker:
-    """
-    Take a card and add into the top corners a smaller version of itself.
-    """
-    x = int(card.width_px / 6)
-    y = int(card.height_px / 6)
-    small_im = card.image().resize((x, y))
-    card.paste(small_im,
-               left = card.gutter_mm,
-               top  = card.gutter_mm,
-               )
-    card.paste(small_im,
-               right = card.width_mm - card.gutter_mm,
-               top   = card.gutter_mm,
-               )
-
-    return card
 
 # Assemble all the card images
 
