@@ -25,7 +25,7 @@ base_maker = CardMaker(width    = 62,
 
 border_size_mm = 3
 mid_mm         = (base_maker.height_mm / 2) + 10    # Middle of stripes (main)
-mid_top_mm     = 12                                 # Middle of stripes (top, small)
+mid_top_mm     = 12                                 # Middle of stripes (top)
 
 
 # Fonts
@@ -74,25 +74,25 @@ def card(num: int, colours: list[bool]) -> CardMaker:
 def paste_stripes(maker: CardMaker, idx: int):
     """
     Paste the stripes of a given index onto the card.
-    Will include the large (main) and small (top) stripes.
+    Will include the main (larger) and top (smaller) stripes.
     """
 
     # The main stripe
 
-    mid_separation_mm = 12
+    mid_separation_mm = 13
     y_mm              = (idx - 1.5) * mid_separation_mm + mid_mm
 
-    maker.paste(strip_ims[idx][0],
+    maker.paste(stripe_ims[idx][0],
                 center = maker.width_mm / 2,
                 middle = y_mm,
                 )
 
-    # The small stripe
+    # The top stripe
 
     mid_separation_mm = 4
     y_mm              = (idx - 1.5) * mid_separation_mm + mid_top_mm
 
-    maker.paste(strip_ims[idx][1],
+    maker.paste(stripe_ims[idx][1],
                 center = maker.width_mm / 2,
                 middle = y_mm,
                 )
@@ -100,17 +100,17 @@ def paste_stripes(maker: CardMaker, idx: int):
 
 def stripe_images(idx: int) -> (Image, Image):
     """
-    Make two stripe image for this index - a main one and a small one.
+    Make two stripe image for this index - a main one and a top one.
     """
-    thickness_px       = int(base_maker.to_px(8))
-    thickness_small_px = int(base_maker.to_px(2.3))
+    thickness_px     = int(base_maker.to_px(8))
+    thickness_top_px = int(base_maker.to_px(2.3))
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
                     color = stripe_colours[idx],
                     )
     im1 = Image.new(mode = 'RGBA',
-                    size = (base_maker.width_with_gutters_px, thickness_small_px),
+                    size = (base_maker.width_with_gutters_px, thickness_top_px),
                     color = stripe_colours[idx],
                     )
     return (im0, im1)
@@ -119,11 +119,11 @@ def stripe_images(idx: int) -> (Image, Image):
 # Assemble the cards
 
 
-strip_ims = [stripe_images(0),    # [main_image, small_image]
-             stripe_images(1),
-             stripe_images(2),
-             stripe_images(3),
-             ]
+stripe_ims = [stripe_images(0),    # [main_image, top_image]
+              stripe_images(1),
+              stripe_images(2),
+              stripe_images(3),
+              ]
 
 
 def one_stripe_cards(count_of_each: int) -> list[Image]:
