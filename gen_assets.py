@@ -6,7 +6,9 @@ import card_images as cardims
 
 
 cards_out_file = 'out/cards.png'
+die_out_file   = 'out/die.png'
 num_cards      = len(cardims.card_images)
+COL_COUNT      = cardims.COL_COUNT
 
 
 # Render the cards
@@ -22,3 +24,18 @@ for card_im in cardims.card_images:
 
 sheet.save(cards_out_file)
 print('Output to ' + cards_out_file)
+
+
+# Render the die
+
+sheet = ImageSheet(card_width  = cardims.die_side_ims[0].width,
+                   card_height = cardims.die_side_ims[0].height,
+                   columns     = COL_COUNT,
+                   rows        = 1,
+                   )
+
+for side_im in cardims.die_side_ims:
+    sheet.add(side_im)
+
+sheet.save(die_out_file)
+print('Output to ' + die_out_file)
