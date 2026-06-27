@@ -126,74 +126,74 @@ stripe_ims = [stripe_images(0),    # [main_image, top_image]
               ]
 
 
-def one_stripe_cards(count_of_each: int) -> list[Image]:
+def one_stripe_cards(count_of_each: int) -> list[CardMaker]:
     """
-    Return a list of images of one-stripe cards.
+    Return a list of one-stripe cards.
     """
-    ims = []
+    cards = []
 
-    # Create one image of each card
+    # Create one of each card
 
     for col in range(0, COL_COUNT):
         cols = [(i == col) for i in range(0, COL_COUNT)]
-        im   = card(4, cols).image()
-        ims.append(im)
+        crd  = card(4, cols)
+        cards.append(crd)
 
-    return ims * count_of_each
+    return cards * count_of_each
 
 
-def two_stripe_cards(count_of_each: int) -> list[Image]:
+def two_stripe_cards(count_of_each: int) -> list[CardMaker]:
     """
-    Return a list of images of two-stripe cards.
+    Return a list of two-stripe cards.
     """
-    ims = []
+    cards = []
 
-    # Create one image of each card
+    # Create one of each card
 
     for col1 in range(0, COL_COUNT - 1):
         for col2 in range(col1 + 1, COL_COUNT):
             cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
-            im   = card(2, cols).image()
-            ims.append(im)
+            crd  = card(2, cols)
+            cards.append(crd)
 
-    return ims * count_of_each
+    return cards * count_of_each
 
 
-def three_stripe_cards(count_of_each: int) -> list[Image]:
+def three_stripe_cards(count_of_each: int) -> list[CardMaker]:
     """
-    Return a list of images of three-stripe cards.
+    Return a list of three-stripe cards.
     """
-    ims = []
+    cards = []
 
-    # Create one image of each card
+    # Create one of each card
 
     for col in range(0, COL_COUNT):
         cols = [(i != col) for i in range(0, COL_COUNT)]
-        im   = card(1, cols).image()
-        ims.append(im)
+        crd  = card(1, cols)
+        cards.append(crd)
 
-    return ims * count_of_each
+    return cards * count_of_each
 
 
-def four_stripe_cards(count_of_each: int) -> list[Image]:
+def four_stripe_cards(count_of_each: int) -> list[CardMaker]:
     """
-    Return a list of images of four-stripe cards.
+    Return a list of four-stripe cards.
     """
 
-    # Create the iamge
+    # Create the card
 
     crd = card(-1, [True] * COL_COUNT)
-    im  = crd.image()
 
-    return [im] * count_of_each
+    return [crd] * count_of_each
 
-# Assemble all the card images
 
-card_images = []
-card_images.extend(one_stripe_cards(4))
-card_images.extend(two_stripe_cards(3))
-card_images.extend(three_stripe_cards(2))
-card_images.extend(four_stripe_cards(4))
+# Assemble all the cards
+
+cards = []
+cards.extend(one_stripe_cards(4))
+cards.extend(two_stripe_cards(3))
+cards.extend(three_stripe_cards(2))
+cards.extend(four_stripe_cards(4))
 
 
 # Make sides of a die

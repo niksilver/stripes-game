@@ -6,7 +6,7 @@ import card_images as cardims
 
 
 cards_out_file = 'out/cards.pdf'
-num_cards      = len(cardims.card_images)
+num_cards      = len(cardims.cards)
 
 
 # Render the cards
@@ -17,8 +17,8 @@ sheet = PDFSheets(card_width  = cardims.base_maker.width_mm,
                   include_backs = False,
                   )
 
-for card_im in cardims.card_images:
-    sheet.add(card_im)
+for crd in cardims.cards:
+    sheet.add(crd)
 
 sheet.output(cards_out_file)
 print('Output to ' + cards_out_file)
