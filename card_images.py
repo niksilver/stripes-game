@@ -10,6 +10,7 @@ stripe_colours = [(212,   0, 212, 220),    # Magenta
                   (212, 212,   0, 220),    # Yellow
                   (  0, 192,   0, 220),    # Green
                   ( 96,  96, 255, 220),    # Blue
+                  (  0, 212, 212, 220),    # Cyan
                   ]
 COL_COUNT      = len(stripe_colours)
 
@@ -19,7 +20,7 @@ COL_COUNT      = len(stripe_colours)
 base_maker = CardMaker(width    = 58,
                        height   = 85,
                        unit     = 'mm',
-                       width_px = 480,
+                       width_px = 360,
                        gutter   = 4,
                        )
 
@@ -76,10 +77,12 @@ def paste_stripes(maker: CardMaker, idx: int):
     Will include the main (larger) and top (smaller) stripes.
     """
 
+    mid_offset = (COL_COUNT - 1) / 2
+
     # The main stripe
 
-    mid_separation_mm = 12.5
-    y_mm              = (idx - 1.5) * mid_separation_mm + mid_mm
+    mid_separation_mm = 10.0
+    y_mm              = (idx - mid_offset) * mid_separation_mm + mid_mm
 
     maker.paste(stripe_ims[idx][0],
                 center = maker.width_mm / 2,
@@ -88,8 +91,8 @@ def paste_stripes(maker: CardMaker, idx: int):
 
     # The top stripe
 
-    mid_separation_mm = 3.0
-    y_mm              = (idx - 1.5) * mid_separation_mm + mid_top_mm
+    mid_separation_mm = 2.5
+    y_mm              = (idx - mid_offset) * mid_separation_mm + mid_top_mm
 
     maker.paste(stripe_ims[idx][1],
                 center = maker.width_mm / 2,
@@ -101,8 +104,8 @@ def stripe_images(idx: int) -> (Image, Image):
     """
     Make two stripe image for this index - a main one and a top one.
     """
-    thickness_px     = int(base_maker.to_px(7.5))
-    thickness_top_px = int(base_maker.to_px(1.8))
+    thickness_px     = int(base_maker.to_px(6.5))
+    thickness_top_px = int(base_maker.to_px(1.4))
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
@@ -122,6 +125,7 @@ stripe_ims = [stripe_images(0),    # [main_image, top_image]
               stripe_images(1),
               stripe_images(2),
               stripe_images(3),
+              stripe_images(4),
               ]
 
 
@@ -191,8 +195,8 @@ def four_stripe_cards(count_of_each: int) -> list[CardMaker]:
 cards = []
 cards.extend(one_stripe_cards(4))
 cards.extend(two_stripe_cards(3))
-cards.extend(three_stripe_cards(2))
-cards.extend(four_stripe_cards(4))
+# cards.extend(three_stripe_cards(2))
+# cards.extend(four_stripe_cards(4))
 
 
 # Make sides of a die
