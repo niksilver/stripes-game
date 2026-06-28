@@ -6,26 +6,25 @@ from PIL import ImageChops
 from gamehelper.card_maker import CardMaker
 
 
-stripe_colours = [(212,   0, 212),    # Magenta
-                  (212, 212,   0),    # Yellow
-                  (  0, 192,   0),    # Green
-                  ( 96,  96, 255),    # Blue
+stripe_colours = [(212,   0, 212, 220),    # Magenta
+                  (212, 212,   0, 220),    # Yellow
+                  (  0, 192,   0, 220),    # Green
+                  ( 96,  96, 255, 220),    # Blue
                   ]
 COL_COUNT      = len(stripe_colours)
 
 
 # Base card
 
-base_maker = CardMaker(width    = 62,
-                       height   = 87,
+base_maker = CardMaker(width    = 58,
+                       height   = 85,
                        unit     = 'mm',
                        width_px = 480,
                        gutter   = 4,
                        )
 
-border_size_mm = 3
-mid_mm         = (base_maker.height_mm / 2) + 10    # Middle of stripes (main)
-mid_top_mm     = 12                                 # Middle of stripes (top)
+mid_mm         = (base_maker.height_mm / 2) + 9     # Middle of stripes (main)
+mid_top_mm     = 10                                 # Middle of stripes (top)
 
 
 # Fonts
@@ -34,7 +33,7 @@ base_maker.font_family('DejaVu Sans',
                        file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
                        )
 base_maker.font_name('Number',     family = 'DejaVu Sans', size = 48)
-base_maker.font_name('Number top', family = 'DejaVu Sans', size = 12)
+base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
 
 
 # Make cards and their images
@@ -58,12 +57,12 @@ def card(num: int, colours: list[bool]) -> CardMaker:
                font   = 'Number',
                )
     maker.text(text   = str(num),    # Top left
-               center = 8,
+               center = 6,
                middle = mid_top_mm,
                font   = 'Number top',
                )
     maker.text(text   = str(num),    # Top left
-               center = maker.width - 8,
+               center = maker.width - 6,
                middle = mid_top_mm,
                font   = 'Number top',
                )
@@ -79,7 +78,7 @@ def paste_stripes(maker: CardMaker, idx: int):
 
     # The main stripe
 
-    mid_separation_mm = 13
+    mid_separation_mm = 12.5
     y_mm              = (idx - 1.5) * mid_separation_mm + mid_mm
 
     maker.paste(stripe_ims[idx][0],
@@ -89,7 +88,7 @@ def paste_stripes(maker: CardMaker, idx: int):
 
     # The top stripe
 
-    mid_separation_mm = 4
+    mid_separation_mm = 3.0
     y_mm              = (idx - 1.5) * mid_separation_mm + mid_top_mm
 
     maker.paste(stripe_ims[idx][1],
@@ -102,8 +101,8 @@ def stripe_images(idx: int) -> (Image, Image):
     """
     Make two stripe image for this index - a main one and a top one.
     """
-    thickness_px     = int(base_maker.to_px(8))
-    thickness_top_px = int(base_maker.to_px(2.3))
+    thickness_px     = int(base_maker.to_px(7.5))
+    thickness_top_px = int(base_maker.to_px(1.8))
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
