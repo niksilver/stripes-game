@@ -193,8 +193,8 @@ def four_stripe_cards(count_of_each: int) -> list[CardMaker]:
 # Assemble all the cards
 
 cards = []
-cards.extend(one_stripe_cards(4))
-cards.extend(two_stripe_cards(3))
+cards.extend(one_stripe_cards(5))
+cards.extend(two_stripe_cards(2))
 # cards.extend(three_stripe_cards(2))
 # cards.extend(four_stripe_cards(4))
 
