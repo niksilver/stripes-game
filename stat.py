@@ -38,12 +38,44 @@ def display_line(line: list[list[bool]]):
         print()
 
 
+def add_to_line(line, deck) -> bool:
+    """
+    Given the line and the deck, add the next card onto the line
+    that matches one of the stripes.
+    onto the line. Will update both of these.
+    Returns success Boolean.
+    """
+    target = line[-1]
+    index  = 0
+    match = False
+
+    print(f'Testing {target}')
+    for i, card in enumerate(deck):
+        index = i
+        for j in range(0, len(target)):
+            if target[j] == card[j] == True:
+                match = True
+                break
+        if match:
+            break
+
+    if match:
+        card = deck.pop(index)
+        line.append(card)
+        print(f'matched with {card}')
+        return True
+
+    return False
+
+
 if __name__ == '__main__':
     deck = create_deck()
     print(f'We have a deck of {len(deck)} cards')
     random.shuffle(deck)
     line = []
     line.append(deck.pop(0))
+    display_line(line)
+    add_to_line(line, deck)
     display_line(line)
 
 else:
