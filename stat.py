@@ -1,4 +1,10 @@
+import random
+
+
 # Work out 1-stripe cards are more or less valuable than 2-stripe cards.
+
+# A card is a list[bool], where list[i] == True iff it has a stripe of colour i.
+
 
 NUM_STRIPES = 5
 
@@ -23,9 +29,22 @@ def create_deck():
 
     return deck
 
+
+def display_line(line: list[list[bool]]):
+    """Print out a line of cards."""
+    for i in range(0, NUM_STRIPES):
+        for card in line:
+            print('=' if card[i] else '.', end = '')
+        print()
+
+
 if __name__ == '__main__':
     deck = create_deck()
     print(f'We have a deck of {len(deck)} cards')
+    random.shuffle(deck)
+    line = []
+    line.append(deck.pop(0))
+    display_line(line)
 
 else:
     print('Run this like a script')
