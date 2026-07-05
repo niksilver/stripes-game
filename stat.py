@@ -34,7 +34,7 @@ def display_line(line: list[list[bool]]):
     """Print out a line of cards."""
     for i in range(0, NUM_STRIPES):
         for card in line:
-            print('=' if card[i] else '.', end = '')
+            print('=== ' if card[i] else '  . ', end = '')
         print()
 
 
@@ -49,7 +49,6 @@ def add_to_line(line, deck) -> bool:
     index  = 0
     match = False
 
-    print(f'Testing {target}')
     for i, card in enumerate(deck):
         index = i
         for j in range(0, len(target)):
@@ -62,10 +61,26 @@ def add_to_line(line, deck) -> bool:
     if match:
         card = deck.pop(index)
         line.append(card)
-        print(f'matched with {card}')
         return True
 
     return False
+
+
+def add_several(count: int, line, deck) -> int:
+    """
+    Add several cards to the line, up to the number given..
+    Updates the line and the deck.
+    Returns number oadded
+    """
+    added = 0
+    for i in range(0, count):
+        success = add_to_line(line, deck)
+        if success:
+            added = added + 1
+        else:
+            break
+
+    return added
 
 
 if __name__ == '__main__':
@@ -74,8 +89,7 @@ if __name__ == '__main__':
     random.shuffle(deck)
     line = []
     line.append(deck.pop(0))
-    display_line(line)
-    add_to_line(line, deck)
+    add_several(7, line, deck)
     display_line(line)
 
 else:
