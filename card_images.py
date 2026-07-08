@@ -48,8 +48,7 @@ def card(num: int, colours: list[bool]) -> CardMaker:
     # Create each stripe
 
     for idx, include in enumerate(colours):
-        if not(include): continue
-        paste_stripes(maker, idx)
+        paste_stripes(maker, idx, include)
 
 
     """
@@ -73,10 +72,11 @@ def card(num: int, colours: list[bool]) -> CardMaker:
     return maker
 
 
-def paste_stripes(maker: CardMaker, idx: int):
+def paste_stripes(maker: CardMaker, idx: int, include: bool):
     """
     Paste the stripes of a given index onto the card.
     Will include the main (larger) and top (smaller) stripes.
+    A stripe that's not included will get a thin line.
     """
 
     mid_offset = (COL_COUNT - 1) / 2
@@ -86,17 +86,25 @@ def paste_stripes(maker: CardMaker, idx: int):
     mid_separation_mm = 10.0
     y_mm              = (idx - mid_offset) * mid_separation_mm + mid_mm
 
-    maker.paste(stripe_ims[idx][0],
+    im = no_stripe_ims[0]
+    if include:
+        im = stripe_ims[idx][0]
+
+    maker.paste(im,
                 center = maker.width_mm / 2,
                 middle = y_mm,
                 )
 
     # The top stripe
 
+    im = no_stripe_ims[1]
+    if include:
+        im = stripe_ims[idx][1]
+
     mid_separation_mm = 2.5
     y_mm              = (idx - mid_offset) * mid_separation_mm + mid_top_mm
 
-    maker.paste(stripe_ims[idx][1],
+    maker.paste(im,
                 center = maker.width_mm / 2,
                 middle = y_mm,
                 )
@@ -120,15 +128,35 @@ def stripe_images(idx: int) -> (Image, Image):
     return (im0, im1)
 
 
+def no_stripe_images() -> (Image, Image):
+    """
+    Make two no-stripe images for any index - a main one and a top one.
+    This is really just a thin line.
+    """
+    thickness_px     = int(base_maker.to_px(0.18))
+    thickness_top_px = int(base_maker.to_px(0.17))
+
+    im0 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_px),
+                    color = (128, 128, 128, 220),
+                    )
+    im1 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_top_px),
+                    color = (128, 128, 128, 220),
+                    )
+    return (im0, im1)
+
+
 # Assemble the cards
 
 
-stripe_ims = [stripe_images(0),    # [main_image, top_image]
-              stripe_images(1),
-              stripe_images(2),
-              stripe_images(3),
-              stripe_images(4),
-              ]
+stripe_ims    = [stripe_images(0),    # [main_image, top_image]
+                 stripe_images(1),
+                 stripe_images(2),
+                 stripe_images(3),
+                 stripe_images(4),
+                 ]
+no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 
 
 def one_stripe_cards(count_of_each: int) -> list[CardMaker]:
