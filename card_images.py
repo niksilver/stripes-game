@@ -41,7 +41,7 @@ base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
 
 def card(num: int, colours: list[bool]) -> CardMaker:
     """
-    Make a card image with the given number and each stripe present or not.
+    Make a card image with [no longer: the given number and] each stripe present or not.
     """
     maker = base_maker.copy()
 
@@ -52,6 +52,7 @@ def card(num: int, colours: list[bool]) -> CardMaker:
         paste_stripes(maker, idx)
 
 
+    """
     maker.text(text   = str(num),    # Main
                center = maker.width / 2,
                middle = mid_mm,
@@ -67,6 +68,7 @@ def card(num: int, colours: list[bool]) -> CardMaker:
                middle = mid_top_mm,
                font   = 'Number top',
                )
+    """
 
     return maker
 
