@@ -39,9 +39,9 @@ base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
 
 # Make cards and their images
 
-def card(num: int, colours: list[bool]) -> CardMaker:
+def card(text: str, colours: list[bool]) -> CardMaker:
     """
-    Make a card image with [no longer: the given number and] each stripe present or not.
+    Make a card image with the given text and each stripe present or not.
     """
     maker = base_maker.copy()
 
@@ -51,23 +51,21 @@ def card(num: int, colours: list[bool]) -> CardMaker:
         paste_stripes(maker, idx, include)
 
 
-    """
-    maker.text(text   = str(num),    # Main
+    maker.text(text   = text,    # Main
                center = maker.width / 2,
                middle = mid_mm,
                font   = 'Number',
                )
-    maker.text(text   = str(num),    # Top left
+    maker.text(text   = text,    # Top left
                center = 6,
                middle = mid_top_mm,
                font   = 'Number top',
                )
-    maker.text(text   = str(num),    # Top left
+    maker.text(text   = text,    # Top left
                center = maker.width - 6,
                middle = mid_top_mm,
                font   = 'Number top',
                )
-    """
 
     return maker
 
@@ -128,21 +126,62 @@ def stripe_images(idx: int) -> (Image, Image):
     return (im0, im1)
 
 
+# Alternative ways of showing 'no stripes'.
+
+
 def no_stripe_images() -> (Image, Image):
     """
     Make two no-stripe images for any index - a main one and a top one.
-    This is really just a thin line.
+    This is just empty space.
     """
     thickness_px     = int(base_maker.to_px(0.18))
     thickness_top_px = int(base_maker.to_px(0.17))
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
-                    color = (128, 128, 128, 220),
+                    color = (128, 128, 128, 0),    # Entirely transparent
                     )
     im1 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_top_px),
-                    color = (128, 128, 128, 220),
+                    color = (128, 128, 128, 0),    # Entirely transparent
+                    )
+    return (im0, im1)
+
+
+def pin_stripe_images() -> (Image, Image):
+    """
+    Make two no-stripe images for any index - a main one and a top one.
+    This is just a thin line.
+    """
+    thickness_px     = int(base_maker.to_px(0.18))    # Very thin
+    thickness_top_px = int(base_maker.to_px(0.17))    # Very thin
+
+    im0 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_px),
+                    color = (128, 128, 128, 220),    # Grey
+                    )
+    im1 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_top_px),
+                    color = (128, 128, 128, 220),    # Grey
+                    )
+    return (im0, im1)
+
+
+def grey_stripe_images() -> (Image, Image):
+    """
+    Make two no-stripe images for any index - a main one and a top one.
+    This is the same as a stripe, but light grey.
+    """
+    thickness_px     = int(base_maker.to_px(6.5))    # Same thickness as coloured stripes
+    thickness_top_px = int(base_maker.to_px(1.4))    # Same thickness as coloured stripes
+
+    im0 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_px),
+                    color = (128, 128, 128, 64),    # Grey
+                    )
+    im1 = Image.new(mode = 'RGBA',
+                    size = (base_maker.width_with_gutters_px, thickness_top_px),
+                    color = (128, 128, 128, 64),    # Grey
                     )
     return (im0, im1)
 
@@ -156,10 +195,10 @@ stripe_ims    = [stripe_images(0),    # [main_image, top_image]
                  stripe_images(3),
                  stripe_images(4),
                  ]
-no_stripe_ims = no_stripe_images()    # [main_image, top_image]
+no_stripe_ims = grey_stripe_images()    # [main_image, top_image]
 
 
-def one_stripe_cards(count_of_each: int) -> list[CardMaker]:
+def one_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
     """
     Return a list of one-stripe cards.
     """
@@ -169,13 +208,13 @@ def one_stripe_cards(count_of_each: int) -> list[CardMaker]:
 
     for col in range(0, COL_COUNT):
         cols = [(i == col) for i in range(0, COL_COUNT)]
-        crd  = card(4, cols)
+        crd  = card(text, cols)
         cards.append(crd)
 
     return cards * count_of_each
 
 
-def two_stripe_cards(count_of_each: int) -> list[CardMaker]:
+def two_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
     """
     Return a list of two-stripe cards.
     """
@@ -186,13 +225,13 @@ def two_stripe_cards(count_of_each: int) -> list[CardMaker]:
     for col1 in range(0, COL_COUNT - 1):
         for col2 in range(col1 + 1, COL_COUNT):
             cols = [(i == col1 or i == col2) for i in range(0, COL_COUNT)]
-            crd  = card(2, cols)
+            crd  = card(text, cols)
             cards.append(crd)
 
     return cards * count_of_each
 
 
-def three_stripe_cards(count_of_each: int) -> list[CardMaker]:
+def three_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
     """
     Return a list of three-stripe cards.
     """
@@ -202,20 +241,20 @@ def three_stripe_cards(count_of_each: int) -> list[CardMaker]:
 
     for col in range(0, COL_COUNT):
         cols = [(i != col) for i in range(0, COL_COUNT)]
-        crd  = card(1, cols)
+        crd  = card(text, cols)
         cards.append(crd)
 
     return cards * count_of_each
 
 
-def four_stripe_cards(count_of_each: int) -> list[CardMaker]:
+def four_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
     """
     Return a list of four-stripe cards.
     """
 
     # Create the card
 
-    crd = card(-1, [True] * COL_COUNT)
+    crd = card(text, [True] * COL_COUNT)
 
     return [crd] * count_of_each
 
@@ -223,10 +262,10 @@ def four_stripe_cards(count_of_each: int) -> list[CardMaker]:
 # Assemble all the cards
 
 cards = []
-cards.extend(one_stripe_cards(5))
-cards.extend(two_stripe_cards(2))
-# cards.extend(three_stripe_cards(2))
-# cards.extend(four_stripe_cards(4))
+cards.extend(one_stripe_cards('', 5))
+cards.extend(two_stripe_cards('', 2))
+# cards.extend(three_stripe_cards('', 2))
+# cards.extend(four_stripe_cards('', 4))
 
 
 # Make sides of a die
