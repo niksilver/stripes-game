@@ -39,7 +39,7 @@ base_maker.font_name('Number',     family = 'DejaVu Sans', size = 48)
 base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
 
 
-# Make card combos
+# Make card include mappings
 
 
 def sign(n: int) -> int:
@@ -54,11 +54,12 @@ def sign(n: int) -> int:
         return 1
 
 
-def make_stripe_combos() -> list[list[list[bool]]]:
+def make_stripe_includes() -> list[list[list[bool]]]:
     """
-    Return a list of stripe combos. Result[n] is a list `c` such that
+    Return a list of stripe includes.  Result[n] is a list `c` such that
     each element is a unique list[bool] which contains exactly
     `n` True values.
+    E.g. Result[2] is every list[bool] where exactly two elements are True.
     """
     out = [[] for i in range(COL_COUNT + 1)]
 
@@ -78,15 +79,15 @@ def make_stripe_combos() -> list[list[list[bool]]]:
 
 # Make cards and their images
 
-def card(text: str, colours: list[bool]) -> CardMaker:
+def card(text: str, include: list[bool]) -> CardMaker:
     """
-    Make a card image with the given text and each stripe present or not.
+    Make a card image with the given text and each stripe included or not.
     """
     maker = base_maker.copy()
 
     # Create each stripe
 
-    for idx, include in enumerate(colours):
+    for idx, include in enumerate(include):
         paste_stripes(maker, idx, include)
 
 
@@ -149,7 +150,7 @@ def paste_stripes(maker: CardMaker, idx: int, include: bool):
 
 def stripe_images(idx: int) -> (Image, Image):
     """
-    Make two stripe image for this index - a main one and a top one.
+    Make two stripe images for this index - a main one and a top one.
     """
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
@@ -240,22 +241,22 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
-stripe_combos = make_stripe_combos()
+stripe_includes = make_stripe_includes()
 
 cards = []
 
 # 1-stripe cards
 
-for colours in stripe_combos[1]:
+for include in stripe_includes[1]:
     for count in range(2, 7):
         score = str(count)
-        crd   = card(score, colours)
+        crd   = card(score, include)
         cards.append(crd)
 
 # 2-stripe cards
 
-for colours in stripe_combos[2]:
+for include in stripe_includes[2]:
     for count in range(0, 2):
         score = str(count)
-        crd   = card(score, colours)
+        crd   = card(score, include)
         cards.append(crd)
