@@ -54,13 +54,13 @@ def sign(n: int) -> int:
         return 1
 
 
-def make_stripe_combos():
+def make_stripe_combos() -> list[list[list[bool]]]:
     """
     Return a list of stripe combos. Result[n] is a list `c` such that
     each element is a unique list[bool] which contains exactly
     `n` True values.
     """
-    out = [[]] * (COL_COUNT + 1)
+    out = [[] for i in range(COL_COUNT + 1)]
 
     for i in range(1, 2**COL_COUNT):
         stripes = 0
@@ -298,14 +298,28 @@ stripe_ims    = [stripe_images(0),    # [main_image, top_image]
                  stripe_images(3),
                  stripe_images(4),
                  ]
-no_stripe_ims = grey_stripe_images()    # [main_image, top_image]
+no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 
 
 # Assemble all the cards
 
 
+stripe_combos = make_stripe_combos()
+
 cards = []
-cards.extend(one_stripe_cards('', 5))
-cards.extend(two_stripe_cards('', 2))
-# cards.extend(three_stripe_cards('', 2))
-# cards.extend(four_stripe_cards('', 4))
+
+# 1-stripe cards
+
+for colours in stripe_combos[1]:
+    for count in range(2, 7):
+        score = str(count)
+        crd   = card(score, colours)
+        cards.append(crd)
+
+# 2-stripe cards
+
+for colours in stripe_combos[2]:
+    for count in range(0, 2):
+        score = str(count)
+        crd   = card(score, colours)
+        cards.append(crd)
