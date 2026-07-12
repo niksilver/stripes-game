@@ -1,3 +1,5 @@
+import math
+
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -35,6 +37,43 @@ base_maker.font_family('DejaVu Sans',
                        )
 base_maker.font_name('Number',     family = 'DejaVu Sans', size = 48)
 base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
+
+
+# Make card combos
+
+
+def sign(n: int) -> int:
+    """
+    Return 1, 0, or -1 as the sign of n.
+    """
+    if n == 0:
+        return 0
+    elif n < 0:
+        return -1
+    else:
+        return 1
+
+
+def make_stripe_combos():
+    """
+    Return a list of stripe combos. Result[n] is a list `c` such that
+    each element is a unique list[bool] which contains exactly
+    `n` True values.
+    """
+    out = [[]] * (COL_COUNT + 1)
+
+    for i in range(1, 2**COL_COUNT):
+        stripes = 0
+        pattern = []
+
+        for power in range(0, COL_COUNT):
+            digit = sign(i & (2 ** power))   # Binary digit in column `power`
+            stripes = stripes + digit        # Count of 1s in binary form
+            pattern.append(digit == 1)       # Building the list[bool]
+        
+        out[stripes].append(pattern)
+
+    return out
 
 
 # Make cards and their images
@@ -186,16 +225,7 @@ def grey_stripe_images() -> (Image, Image):
     return (im0, im1)
 
 
-# Assemble the cards
-
-
-stripe_ims    = [stripe_images(0),    # [main_image, top_image]
-                 stripe_images(1),
-                 stripe_images(2),
-                 stripe_images(3),
-                 stripe_images(4),
-                 ]
-no_stripe_ims = grey_stripe_images()    # [main_image, top_image]
+# Individual cards of each type
 
 
 def one_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
@@ -259,7 +289,20 @@ def four_stripe_cards(text: str, count_of_each: int) -> list[CardMaker]:
     return [crd] * count_of_each
 
 
+# Set up the stripe images to use
+
+
+stripe_ims    = [stripe_images(0),    # [main_image, top_image]
+                 stripe_images(1),
+                 stripe_images(2),
+                 stripe_images(3),
+                 stripe_images(4),
+                 ]
+no_stripe_ims = grey_stripe_images()    # [main_image, top_image]
+
+
 # Assemble all the cards
+
 
 cards = []
 cards.extend(one_stripe_cards('', 5))
