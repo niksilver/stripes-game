@@ -309,15 +309,3 @@ cards.extend(one_stripe_cards('', 5))
 cards.extend(two_stripe_cards('', 2))
 # cards.extend(three_stripe_cards('', 2))
 # cards.extend(four_stripe_cards('', 4))
-
-
-# Make sides of a die
-
-die_side_ims = []
-for i, col in enumerate(stripe_colours):
-    length_px = base_maker.width_px // 2
-    im = Image.new(mode = 'RGBA',
-                   size = (length_px, length_px),
-                   color = col,
-                   )
-    die_side_ims.append(im)
