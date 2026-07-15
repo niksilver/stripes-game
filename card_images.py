@@ -35,8 +35,8 @@ mid_top_mm     = 10                                 # Middle of stripes (top)
 base_maker.font_family('DejaVu Sans',
                        file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
                        )
-base_maker.font_name('Number',     family = 'DejaVu Sans', size = 48)
-base_maker.font_name('Number top', family = 'DejaVu Sans', size = 10)
+base_maker.font_name('Number',     family = 'DejaVu Sans', size = 40)
+base_maker.font_name('Number top', family = 'DejaVu Sans', size = 8)
 
 
 # Make card include mappings
@@ -247,16 +247,18 @@ cards = []
 
 # 1-stripe cards
 
-for include in stripe_includes[1]:
-    for count in range(2, 7):
-        score = str(count)
-        crd   = card(score, include)
-        cards.append(crd)
+for count in range(25):
+    include_idx = count % COL_COUNT
+    include     = stripe_includes[1][include_idx]
+    score = str(count + 26)
+    crd   = card(score, include)
+    cards.append(crd)
 
 # 2-stripe cards
 
-for include in stripe_includes[2]:
-    for count in range(0, 2):
-        score = str(count)
-        crd   = card(score, include)
-        cards.append(crd)
+for count in range(0, 20):
+    include_idx = count % len(stripe_includes[2])
+    include     = stripe_includes[2][include_idx]
+    score = str(count + 1)
+    crd   = card(score, include)
+    cards.append(crd)
