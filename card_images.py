@@ -79,7 +79,7 @@ def make_stripe_includes() -> list[list[list[bool]]]:
 
 # Make cards and their images
 
-def card(text: str, include: list[bool]) -> CardMaker:
+def make_card(text: str, include: list[bool]) -> CardMaker:
     """
     Make a card image with the given text and each stripe included or not.
     """
@@ -230,6 +230,19 @@ def grey_stripe_images() -> (Image, Image):
     return (im0, im1)
 
 
+# Functions to put the scores on the cards
+
+
+def one_stripe_scores(include: list[bool]) -> str:
+    """
+    Given a 1-stripe pattern, return the scores that such a card
+    would have.
+    """
+    scores = []
+    idx = include.index(True)
+    return [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
+
+
 # Set up the stripe images to use
 
 
@@ -251,12 +264,10 @@ cards = []
 
 # 1-stripe cards
 
-for count in range(25):
-    include_idx = count % COL_COUNT
-    include     = stripe_includes[1][include_idx]
-    score = str(count + 21)
-    crd   = card(score, include)
-    cards.append(crd)
+for include in stripe_includes[1]:
+    for score in one_stripe_scores(include):
+        card = make_card(str(score), include)
+        cards.append(card)
 
 # 2-stripe cards
 
@@ -264,5 +275,5 @@ for count in range(0, 20):
     include_idx = count % len(stripe_includes[2])
     include     = stripe_includes[2][include_idx]
     score = str(count + 1)
-    crd   = card(score, include)
+    crd   = make_card(score, include)
     cards.append(crd)
