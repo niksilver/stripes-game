@@ -33,7 +33,7 @@ mid_top_mm     = 10                                 # Middle of stripes (top)
 # Fonts
 
 base_maker.font_family('DejaVu Sans',
-                       file = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+                       file = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
                        )
 base_maker.font_name('Number',     family = 'DejaVu Sans', size = 40)
 base_maker.font_name('Number top', family = 'DejaVu Sans', size = 8)
@@ -84,6 +84,7 @@ def card(text: str, include: list[bool]) -> CardMaker:
     Make a card image with the given text and each stripe included or not.
     """
     maker = base_maker.copy()
+    text_colour = (0, 0, 0, 255)
 
     # Create each stripe
 
@@ -95,16 +96,19 @@ def card(text: str, include: list[bool]) -> CardMaker:
                center = maker.width / 2,
                middle = mid_mm,
                font   = 'Number',
+               fill   = text_colour,
                )
     maker.text(text   = text,    # Top left
                center = 6,
                middle = mid_top_mm,
                font   = 'Number top',
+               fill   = text_colour,
                )
     maker.text(text   = text,    # Top left
                center = maker.width - 6,
                middle = mid_top_mm,
                font   = 'Number top',
+               fill   = text_colour,
                )
 
     return maker
