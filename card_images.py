@@ -250,7 +250,7 @@ cards = []
 for count in range(25):
     include_idx = count % COL_COUNT
     include     = stripe_includes[1][include_idx]
-    score = str(count + 26)
+    score = str(count + 21)
     crd   = card(score, include)
     cards.append(crd)
 
