@@ -230,34 +230,39 @@ def grey_stripe_images() -> (Image, Image):
     return (im0, im1)
 
 
-# Functions to put the scores on the cards
+# Scheme to put the scores on the cards
 
 
-def one_stripe_scores(include: list[bool]) -> str:
+class SingleSequenceScheme:
     """
-    Given a 1-stripe pattern, return the scores that such a card
-    would have.
+    When the cards are all in a single sequence from 1 to 45.
     """
-    idx = include.index(True)
-    scores = [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
-    return [str(s) for s in scores]
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        idx = include.index(True)
+        scores = [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
+        return [str(s) for s in scores]
 
 
-def two_stripe_scores(include: list[bool]) -> str:
-    """
-    Given a 2-stripe pattern, return the scores that such a card
-    would have.
-    For details see design diary of 2026-07-15 (new numbering).
-    """
-    lookup = [[  [0, 0], [1, 20], [5, 16], [8, 13], [11, 12]],
-              [  [0, 0], [0,  0], [2, 19], [6, 15], [ 9, 10]],
-              [  [0, 0], [0,  0], [0,  0], [3, 18], [ 7, 14]],
-              [  [0, 0], [0,  0], [0,  0], [0,  0], [ 4, 17]],
-             ]
-    row = include.index(True)
-    col = include.index(True, row + 1)
-    scores = lookup[row][col]
-    return [str(s) for s in scores]
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        lookup = [[  [0, 0], [1, 20], [5, 16], [8, 13], [11, 12]],
+                  [  [0, 0], [0,  0], [2, 19], [6, 15], [ 9, 10]],
+                  [  [0, 0], [0,  0], [0,  0], [3, 18], [ 7, 14]],
+                  [  [0, 0], [0,  0], [0,  0], [0,  0], [ 4, 17]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
 
 
 # Set up the stripe images to use
@@ -278,17 +283,18 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 stripe_includes = make_stripe_includes()
 
 cards = []
+scheme = SingleSequenceScheme
 
 # 1-stripe cards
 
 for include in stripe_includes[1]:
-    for score in one_stripe_scores(include):
+    for score in scheme.one_stripe_scores(include):
         card = make_card(score, include)
         cards.append(card)
 
 # 2-stripe cards
 
 for include in stripe_includes[2]:
-    for score in two_stripe_scores(include):
+    for score in scheme.two_stripe_scores(include):
         card = make_card(score, include)
         cards.append(card)
