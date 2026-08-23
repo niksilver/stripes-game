@@ -265,6 +265,57 @@ class SingleSequenceScheme:
         return [str(s) for s in scores]
 
 
+class PerColourScheme:
+    """
+    When every colour is numbered 1-13 (and the two-stripe cards overlap).
+    - Every suit has a card 1-13.
+    - Two-stripe cards are low ones, one-stripe cards are numbered 9+
+    - Numbers work like this:
+
+    ```
+        A        B        C        D        E
+    A:          1,2      3,4      5,6      7,8
+    B:                   5,6      7,8      1,2
+    C:                            1,2      3,4
+    D:                                     5,6
+    E:
+    ```
+    The pattern is:
+    - For the first suit (A), go across 1,2 then 3,4 etc.
+    - For each subsequent suit start on the first line, continue the
+      pattern down and then across.
+	  - E.g. Suit D starts on the first line (5,6) goes down with 7,8
+        then loops back to 1,2, and then has to go across with 3,4.
+
+    This is from design diary 2026-08-18.
+    """
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        scores = [9, 10, 11, 12, 13]
+        return [str(s) for s in scores]
+
+
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        lookup = [[  [0, 0], [1, 2], [3, 4], [5, 6], [7, 8]],
+                  [  [0, 0], [0, 0], [5, 6], [7, 8], [1, 2]],
+                  [  [0, 0], [0, 0], [0, 0], [1, 2], [3, 4]],
+                  [  [0, 0], [0, 0], [0, 0], [0, 0], [5, 6]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
+
+
 # Set up the stripe images to use
 
 
@@ -283,7 +334,7 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 stripe_includes = make_stripe_includes()
 
 cards = []
-scheme = SingleSequenceScheme
+scheme = PerColourScheme
 
 # 1-stripe cards
 
