@@ -177,12 +177,15 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
 
-    im        = Image.open('assets/zigzag.png').convert('RGBA')
+    im     = Image.open('assets/zigzag.png').convert('RGBA')
+    colour = stripe_colours[idx]
+    im     = CardMaker.colour_wash_image(im, colour)
+
     width_px  = base_maker.width_with_gutters_px
     height_px = thickness_px * 2
 
-    im0       = im.resize(size = (width_px, height_px))
-    im1       = im.resize(size = (width_px, thickness_top_px * 2))
+    im0 = im.resize(size = (width_px, height_px))
+    im1 = im.resize(size = (width_px, thickness_top_px * 2))
 
     return (im0, im1)
 
