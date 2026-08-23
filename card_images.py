@@ -152,9 +152,9 @@ def paste_stripes(maker: CardMaker, idx: int, include: bool):
                 )
 
 
-def stripe_images(idx: int) -> (Image, Image):
+def plain_stripe_images(idx: int) -> (Image, Image):
     """
-    Make two stripe images for this index - a main one and a top one.
+    Make two plain stripe images for this index - a main one and a top one.
     """
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
@@ -167,6 +167,23 @@ def stripe_images(idx: int) -> (Image, Image):
                     size = (base_maker.width_with_gutters_px, thickness_top_px),
                     color = stripe_colours[idx],
                     )
+    return (im0, im1)
+
+
+def pattern_stripe_images(idx: int) -> (Image, Image):
+    """
+    Make two plain stripe images for this index - a main one and a top one.
+    """
+    thickness_px     = int(base_maker.to_px(6.5))
+    thickness_top_px = int(base_maker.to_px(1.4))
+
+    im        = Image.open('assets/zigzag.png').convert('RGBA')
+    width_px  = base_maker.width_with_gutters_px
+    height_px = thickness_px * 2
+
+    im0       = im.resize(size = (width_px, height_px))
+    im1       = im.resize(size = (width_px, thickness_top_px * 2))
+
     return (im0, im1)
 
 
@@ -319,11 +336,11 @@ class PerColourScheme:
 # Set up the stripe images to use
 
 
-stripe_ims    = [stripe_images(0),    # [main_image, top_image]
-                 stripe_images(1),
-                 stripe_images(2),
-                 stripe_images(3),
-                 stripe_images(4),
+stripe_ims    = [pattern_stripe_images(0),    # [main_image, top_image]
+                 pattern_stripe_images(1),
+                 pattern_stripe_images(2),
+                 pattern_stripe_images(3),
+                 pattern_stripe_images(4),
                  ]
 no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 
