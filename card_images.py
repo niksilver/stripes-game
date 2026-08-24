@@ -201,9 +201,9 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     # Small top stripe image
 
     repeats   = 4
-    im_canvas = Image.new('RGBA', (width_px * repeats, height_px))
+    im_canvas = Image.new('RGBA', (im.width * repeats, im.height))
     for i in range(repeats):
-        im_canvas.paste(im, box = (width_px * i, 0))
+        im_canvas.paste(im, box = (im.width * i, 0))
 
     im1 = im_canvas.resize(size = (width_px, thickness_top_px * 2))
 
