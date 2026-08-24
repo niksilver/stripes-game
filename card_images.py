@@ -177,15 +177,18 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
 
-    im     = Image.open('assets/zigzag.png').convert('RGBA')
+    ims    = ['assets/zigzag.png',
+              'assets/wave.png',
+              'assets/zigzag.png',
+              'assets/wave.png',
+              'assets/zigzag.png',
+              ]
+    im     = Image.open(ims[idx]).convert('RGBA')
     colour = stripe_colours[idx]
     col_im = Image.new('RGBA',
                        size  = (im.width, im.height),
                        color = colour,
                        )
-    # im     = ImageChops.lighter(im, col_im)
-    # im.alpha_composite(col_im)
-    # col_im.alpha_composite(im)
     im.paste(col_im, mask = im)
 
     # Main stripe image
