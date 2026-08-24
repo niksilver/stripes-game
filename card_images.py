@@ -181,11 +181,21 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     colour = stripe_colours[idx]
     im     = CardMaker.colour_wash_image(im, colour)
 
+    # Main stripe image
+
     width_px  = base_maker.width_with_gutters_px
     height_px = thickness_px * 2
 
     im0 = im.resize(size = (width_px, height_px))
-    im1 = im.resize(size = (width_px, thickness_top_px * 2))
+
+    # Small top stripe image
+
+    repeats   = 4
+    im_canvas = Image.new('RGBA', (width_px * repeats, height_px))
+    for i in range(repeats):
+        im_canvas.paste(im, box = (width_px * i, 0))
+
+    im1 = im_canvas.resize(size = (width_px, thickness_top_px * 2))
 
     return (im0, im1)
 
