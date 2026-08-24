@@ -14,7 +14,7 @@ stripe_colours = [(212,   0, 212, 220),    # Magenta
                   ( 96,  96, 255, 220),    # Blue
                   (  0, 212, 212, 220),    # Cyan
                   ]
-COL_COUNT      = len(stripe_colours)
+COL_COUNT      = None    # Set in the scheme
 
 
 # Base card
@@ -276,10 +276,13 @@ def grey_stripe_images() -> (Image, Image):
 # Scheme to put the scores on the cards
 
 
-class SingleSequenceScheme:
+class SingleSequenceScheme_5Stripes:
     """
     When the cards are all in a single sequence from 1 to 45.
+    Five stripes.
     """
+
+    COL_COUNT = 5
 
     def one_stripe_scores(include: list[bool]) -> str:
         """
@@ -308,8 +311,10 @@ class SingleSequenceScheme:
         return [str(s) for s in scores]
 
 
-class PerColourScheme:
+class PerColourScheme_5Stripes:
     """
+    Five stripes.
+
     When every colour is numbered 1-13 (and the two-stripe cards overlap).
     - Every suit has a card 1-13.
     - Two-stripe cards are low ones, one-stripe cards are numbered 9+
@@ -332,6 +337,8 @@ class PerColourScheme:
 
     This is from design diary 2026-08-18.
     """
+
+    COL_COUNT = 5
 
     def one_stripe_scores(include: list[bool]) -> str:
         """
@@ -374,10 +381,12 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
+scheme = PerColourScheme_5Stripes
+
+COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
 
 cards = []
-scheme = PerColourScheme
 
 # 1-stripe cards
 
