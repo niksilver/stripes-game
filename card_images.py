@@ -99,13 +99,13 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
                fill   = text_colour,
                )
     maker.text(text   = text,    # Top left
-               center = 6,
+               center = 7,
                middle = mid_top_mm,
                font   = 'Number top',
                fill   = text_colour,
                )
     maker.text(text   = text,    # Top left
-               center = maker.width - 6,
+               center = maker.width - 7,
                middle = mid_top_mm,
                font   = 'Number top',
                fill   = text_colour,
