@@ -179,9 +179,9 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
 
     ims    = ['assets/zigzag.png',
               'assets/wave.png',
-              'assets/zigzag.png',
+              'assets/dots.png',
               'assets/wave.png',
-              'assets/zigzag.png',
+              'assets/dots.png',
               ]
     im     = Image.open(ims[idx]).convert('RGBA')
     colour = stripe_colours[idx]
@@ -194,7 +194,7 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     # Main stripe image
 
     width_px  = base_maker.width_with_gutters_px
-    height_px = thickness_px * 2
+    height_px = int(thickness_px * 1.2)
 
     im0 = im.resize(size = (width_px, height_px))
 
