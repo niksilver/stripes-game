@@ -368,26 +368,26 @@ class PerColourScheme_5Stripes:
 
 class PerColourScheme_4Stripes:
     """
-    Four stripes. 38 cards total.
+    Four stripes. 44 cards total.
 
-    When every colour is numbered from 1 to 14 (and the two-stripe cards overlap).
+    When every colour is numbered from 1 to 17 (and the two-stripe cards overlap).
     - Every suit has a card 1, 2, 3, etc.
     - Two-stripe cards are low ones, one-stripe cards are numbered beyond those.
     - Numbers work like this:
 
     ```
         A        B        C        D
-    A:         1,2,3    4,5,6    7,8,9
-    B:                  7,8,9    1,2,3
-    C:                           4,5,6
+    A:       1,2,3,4  5,6,7,8   9,10,11,12
+    B:               9,10,11,12  1,2,3,4
+    C:                           5,6,7,8
     D:
     ```
     The pattern is:
-    - For the first suit (A), go across 1,2,3 then 4,5,6 etc.
+    - For the first suit (A), go across 1,2,3,4 then 5,6,7,8 etc.
     - For each subsequent suit start on the first line, continue the
       pattern down and then across.
-	  - E.g. Suit C starts on the first line (4,5,6) goes down with 7,8,9
-        and continues across with 1,2,3.
+	  - E.g. Suit C starts on the first line (5,6,7,8) goes down with 9,10,11,12
+        and continues across with 1,2,3,4.
 
     This is adapted the 5-stripe version above.
     """
@@ -399,7 +399,7 @@ class PerColourScheme_4Stripes:
         Given a 1-stripe pattern, return the scores that such a card
         would have.
         """
-        scores = [10, 11, 12, 13, 14]
+        scores = [13, 14, 15, 16, 17]
         return [str(s) for s in scores]
 
 
@@ -409,9 +409,9 @@ class PerColourScheme_4Stripes:
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
-        lookup = [[  [0,0,0], [1,2,3], [4,5,6], [7,8,9]],
-                  [  [0,0,0], [0,0,0], [7,8,9], [1,2,3]],
-                  [  [0,0,0], [0,0,0], [0,0,0], [4,5,6]],
+        lookup = [[  [0,0,0,0], [1,2,3,4], [5,6,  7, 8], [9,10,11,12]],
+                  [  [0,0,0,0], [0,0,0,0], [9,10,11,12], [1, 2, 3, 4]],
+                  [  [0,0,0,0], [0,0,0,0], [0, 0, 0, 0], [5, 6, 7, 8]],
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
