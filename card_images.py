@@ -205,7 +205,10 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     for i in range(repeats):
         im_canvas.paste(im, box = (im.width * i, 0))
 
-    im1 = im_canvas.resize(size = (width_px, thickness_top_px * 2))
+    rescale = 0.25
+    width_px  = int(im_canvas.width * rescale)
+    height_px = int(im_canvas.height * rescale)
+    im1 = im_canvas.resize(size = (width_px, height_px))
 
     return (im0, im1)
 
