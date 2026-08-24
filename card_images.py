@@ -366,6 +366,60 @@ class PerColourScheme_5Stripes:
         return [str(s) for s in scores]
 
 
+class PerColourScheme_4Stripes:
+    """
+    Four stripes. 38 cards total.
+
+    When every colour is numbered from 1 to 14 (and the two-stripe cards overlap).
+    - Every suit has a card 1, 2, 3, etc.
+    - Two-stripe cards are low ones, one-stripe cards are numbered beyond those.
+    - Numbers work like this:
+
+    ```
+        A        B        C        D
+    A:         1,2,3    4,5,6    7,8,9
+    B:                  7,8,9    1,2,3
+    C:                           4,5,6
+    D:
+    ```
+    The pattern is:
+    - For the first suit (A), go across 1,2,3 then 4,5,6 etc.
+    - For each subsequent suit start on the first line, continue the
+      pattern down and then across.
+	  - E.g. Suit C starts on the first line (4,5,6) goes down with 7,8,9
+        and continues across with 1,2,3.
+
+    This is adapted the 5-stripe version above.
+    """
+
+    COL_COUNT = 4
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        scores = [10, 11, 12, 13, 14]
+        return [str(s) for s in scores]
+
+
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        lookup = [[  [0,0,0], [1,2,3], [4,5,6], [7,8,9]],
+                  [  [0,0,0], [0,0,0], [7,8,9], [1,2,3]],
+                  [  [0,0,0], [0,0,0], [0,0,0], [4,5,6]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
+
+
+
 # Set up the stripe images to use
 
 
@@ -381,7 +435,7 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
-scheme = PerColourScheme_5Stripes
+scheme = PerColourScheme_4Stripes
 
 COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
