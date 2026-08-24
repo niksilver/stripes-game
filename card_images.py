@@ -178,8 +178,8 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     thickness_top_px = int(base_maker.to_px(1.4))
 
     ims    = ['assets/zigzag.png',
-              'assets/wave.png',
-              'assets/dots.png',
+              'assets/holes.png',
+              'assets/plain.png',
               'assets/wave.png',
               'assets/dots.png',
               ]
