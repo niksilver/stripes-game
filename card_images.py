@@ -179,7 +179,14 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
 
     im     = Image.open('assets/zigzag.png').convert('RGBA')
     colour = stripe_colours[idx]
-    im     = CardMaker.colour_wash_image(im, colour)
+    col_im = Image.new('RGBA',
+                       size  = (im.width, im.height),
+                       color = colour,
+                       )
+    # im     = ImageChops.lighter(im, col_im)
+    # im.alpha_composite(col_im)
+    # col_im.alpha_composite(im)
+    im.paste(col_im, mask = im)
 
     # Main stripe image
 
