@@ -366,9 +366,9 @@ class PerColourScheme_5Stripes_Problem:
         return [str(s) for s in scores]
 
 
-class PerColourScheme_4Stripes:
+class PerColourScheme_4Stripes_4Doubles:
     """
-    Four stripes. 44 cards total.
+    Four stripes, with four of each 2-stripe card. 44 cards total.
 
     When every colour is numbered from 1 to 17 (and the two-stripe cards overlap).
     - Every suit has a card 1, 2, 3, etc.
@@ -387,8 +387,6 @@ class PerColourScheme_4Stripes:
     - For each subsequent suit start on the first line, continue the pattern
       down until you get to (n, n). Go into that cell but don't fill it.
       Then go across. We have to fill in numbers we don't yet see.
-
-    This is adapted the 5-stripe version above.
     """
 
     COL_COUNT = 4
@@ -419,6 +417,40 @@ class PerColourScheme_4Stripes:
         return [str(s) for s in scores]
 
 
+class PerColourScheme_4Stripes_3Doubles:
+    """
+    Four stripes, with three of each 2-stripe card. 38 cards total.
+    Algorithm otherwise like PerColourScheme_4Stripes_4Doubles
+    """
+
+    COL_COUNT = 4
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        scores = [10, 11, 12, 13, 14]
+        return [str(s) for s in scores]
+
+
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        _ = 0
+        lookup = [[  [_,_,_], [1,2,3], [4,5,6], [7,8,9]],
+                  [  [_,_,_], [_,_,_], [7,8,9], [4,5,6]],
+                  [  [_,_,_], [_,_,_], [_,_,_], [1,2,3]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
+
+
 
 # Set up the stripe images to use
 
@@ -435,7 +467,7 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
-scheme = PerColourScheme_4Stripes
+scheme = PerColourScheme_4Stripes_3Doubles
 
 COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
