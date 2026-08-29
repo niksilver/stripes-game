@@ -311,9 +311,9 @@ class SingleSequenceScheme_5Stripes:
         return [str(s) for s in scores]
 
 
-class PerColourScheme_5Stripes:
+class PerColourScheme_5Stripes_Problem:
     """
-    Five stripes.
+    Five stripes. There is an error here. It doesn't work like 4-strip cards.
 
     When every colour is numbered 1-13 (and the two-stripe cards overlap).
     - Every suit has a card 1-13.
@@ -378,16 +378,15 @@ class PerColourScheme_4Stripes:
     ```
         A        B        C        D
     A:       1,2,3,4  5,6,7,8   9,10,11,12
-    B:               9,10,11,12  1,2,3,4
-    C:                           5,6,7,8
+    B:               9,10,11,12  5,6,7,8
+    C:                           1,2,3,4
     D:
     ```
     The pattern is:
     - For the first suit (A), go across 1,2,3,4 then 5,6,7,8 etc.
-    - For each subsequent suit start on the first line, continue the
-      pattern down and then across.
-	  - E.g. Suit C starts on the first line (5,6,7,8) goes down with 9,10,11,12
-        and continues across with 1,2,3,4.
+    - For each subsequent suit start on the first line, continue the pattern
+      down until you get to (n, n). Go into that cell but don't fill it.
+      Then go across. We have to fill in numbers we don't yet see.
 
     This is adapted the 5-stripe version above.
     """
@@ -409,9 +408,10 @@ class PerColourScheme_4Stripes:
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
-        lookup = [[  [0,0,0,0], [1,2,3,4], [5,6,  7, 8], [9,10,11,12]],
-                  [  [0,0,0,0], [0,0,0,0], [9,10,11,12], [1, 2, 3, 4]],
-                  [  [0,0,0,0], [0,0,0,0], [0, 0, 0, 0], [5, 6, 7, 8]],
+        _ = 0
+        lookup = [[  [_,_,_,_], [1,2,3,4], [5,6,  7, 8], [9,10,11,12]],
+                  [  [_,_,_,_], [_,_,_,_], [9,10,11,12], [5, 6, 7, 8]],
+                  [  [_,_,_,_], [_,_,_,_], [_, _, _, _], [1, 2, 3, 4]],
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
@@ -435,7 +435,7 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
-scheme = PerColourScheme_4Stripes
+scheme = PerColourScheme_5Stripes_Problem
 
 COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
