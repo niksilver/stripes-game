@@ -435,7 +435,7 @@ no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 # Assemble all the cards
 
 
-scheme = PerColourScheme_5Stripes_Problem
+scheme = PerColourScheme_4Stripes
 
 COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
