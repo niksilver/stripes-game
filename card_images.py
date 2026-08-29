@@ -92,27 +92,63 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
         paste_stripes(maker, idx, include)
 
 
-    maker.text(text   = text,    # Main
+    text_closer(maker = maker,
+                text   = text,    # Main
                center = maker.width / 2,
                middle = mid_mm,
                font   = 'Number',
                fill   = text_colour,
+               offset = 11,
                )
-    maker.text(text   = text,    # Top left
+    text_closer(maker = maker,
+                text   = text,    # Top left
                center = 7,
                middle = mid_top_mm,
                font   = 'Number top',
                fill   = text_colour,
+               offset = 2.5,
                )
-    maker.text(text   = text,    # Top left
+    text_closer(maker = maker,
+                text   = text,    # Top left
                center = maker.width - 7,
                middle = mid_top_mm,
                font   = 'Number top',
                fill   = text_colour,
+               offset = 2.5,
                )
 
     return maker
 
+
+def text_closer(maker: CardMaker,
+                text: str,
+                center: float,
+                middle: float,
+                font: str,
+                fill: tuple[int,int,int,int],
+                offset: float,
+                ):
+    if len(text) == 2:
+        maker.text(text   = text[0],
+                   center = center - offset,
+                   middle = middle,
+                   font   = font,
+                   fill   = fill,
+                   )
+        maker.text(text   = text[1],
+                   center = center + offset,
+                   middle = middle,
+                   font   = font,
+                   fill   = fill,
+                   )
+    else:
+        maker.text(text   = text,
+                   center = center,
+                   middle = middle,
+                   font   = font,
+                   fill   = fill,
+                   )
+    
 
 def paste_stripes(maker: CardMaker, idx: int, include: bool):
     """
