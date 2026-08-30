@@ -84,7 +84,6 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
     Make a card image with the given text and each stripe included or not.
     """
     maker = base_maker.copy()
-    text_colour = (0, 0, 0, 255)
 
     # Create each stripe
 
@@ -94,28 +93,25 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
 
     text_closer(maker = maker,
                 text   = text,    # Main
-               center = maker.width / 2,
-               middle = mid_mm,
-               font   = 'Number',
-               fill   = text_colour,
-               offset = 11,
-               )
+                center = maker.width / 2,
+                middle = mid_mm,
+                font   = 'Number',
+                offset = 11,
+                )
+    text_closer(maker = maker,
+                text   = text,    # Top right
+                center = 7,
+                middle = mid_top_mm,
+                font   = 'Number top',
+                offset = 2.5,
+                )
     text_closer(maker = maker,
                 text   = text,    # Top left
-               center = 7,
-               middle = mid_top_mm,
-               font   = 'Number top',
-               fill   = text_colour,
-               offset = 2.5,
-               )
-    text_closer(maker = maker,
-                text   = text,    # Top left
-               center = maker.width - 7,
-               middle = mid_top_mm,
-               font   = 'Number top',
-               fill   = text_colour,
-               offset = 2.5,
-               )
+                center = maker.width - 7,
+                middle = mid_top_mm,
+                font   = 'Number top',
+                offset = 2.5,
+                )
 
     return maker
 
@@ -125,28 +121,34 @@ def text_closer(maker: CardMaker,
                 center: float,
                 middle: float,
                 font: str,
-                fill: tuple[int,int,int,int],
                 offset: float,
                 ):
+    """
+    Add centred text, but apply closer kerning of two-character strings.
+    - offset: For a two character string, how much to shift each
+      character closer to the intended centre of the pair.
+    """
+    text_colour = (0, 0, 0, 255)
+
     if len(text) == 2:
         maker.text(text   = text[0],
                    center = center - offset,
                    middle = middle,
                    font   = font,
-                   fill   = fill,
+                   fill   = text_colour,
                    )
         maker.text(text   = text[1],
                    center = center + offset,
                    middle = middle,
                    font   = font,
-                   fill   = fill,
+                   fill   = text_colour,
                    )
     else:
         maker.text(text   = text,
                    center = center,
                    middle = middle,
                    font   = font,
-                   fill   = fill,
+                   fill   = text_colour,
                    )
     
 
