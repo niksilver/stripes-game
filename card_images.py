@@ -517,7 +517,7 @@ COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('ribbon', 'red'),
                          ('rope',   'yellow'),
-                         ('sea',    'blue'),
+                         ('waves',  'blue'),
                          ('dots',   'green'),
                          ])
 
