@@ -173,9 +173,9 @@ def paste_stripes(maker: CardMaker, idx: int, include: bool):
     mid_separation_mm = 10.0
     y_mm              = (idx - mid_offset) * mid_separation_mm + mid_mm
 
-    im = no_stripe_ims[0]
+    im = visuals.empty_ims[0]
     if include:
-        im = stripe_ims[idx][0]
+        im = visuals.ims[idx][0]
 
     maker.paste(im,
                 center = maker.width_mm / 2,
@@ -184,9 +184,9 @@ def paste_stripes(maker: CardMaker, idx: int, include: bool):
 
     # The top stripe
 
-    im = no_stripe_ims[1]
+    im = visuals.empty_ims[1]
     if include:
-        im = stripe_ims[idx][1]
+        im = visuals.ims[idx][1]
 
     mid_separation_mm = 2.5
     y_mm              = (idx - mid_offset) * mid_separation_mm + mid_top_mm
@@ -206,34 +206,43 @@ def get_visuals(palette: dict[str, tuple[int,int,int,int]],
     - `shape_colour`: List of pairs: shape name and colour. The shape
       name will transform to `assets/NAME.png`.
 
-    Returns an object with properties `colours` and `filenames`:
+    Returns an object with these properties:
     - `colours`: A list of RGBA values, with index 0 being the colour of the top stripe.
     - `filenames`: A list of filenames (strings), with index 0 being the image asset
       of the top stripe.
+    - `ims`: A list of pairs. Each pair is an Image. The first is the image to use in
+      the main body of the card for that stripe index; the second is the image for the
+      top of the card.
+    - `empty_ims`: A pair of empty images to use when an index has no stripe.
     """
 
     class Visuals:
-        colours = []
+        colours   = []
         filenames = []
+        ims       = []
+        empty_ims = ()
     out = Visuals()
 
-    for (shape, colour) in shape_colour:
-        out.colours.append(palette[colour])
-        out.filenames.append(f'assets/{shape}.png')
+    for (shape_name, colour_name) in shape_colour:
+        colour   = palette[colour_name]
+        filename = f'assets/{shape_name}.png'
+        out.colours.append(colour)
+        out.filenames.append(filename)
+        out.ims.append(pattern_stripe_images(filename, colour))
+
+    out.empty_ims = no_stripe_images()
 
     return out
 
 
-def pattern_stripe_images(idx: int) -> (Image, Image):
+def pattern_stripe_images(filename: str, colour: (int,int,int,int)) -> (Image, Image):
     """
-    Make two plain stripe images for this index - a main one and a top one.
+    Make two plain stripe images - a main one and a top one.
     """
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
 
-    filename = visuals.filenames[idx]
     im       = Image.open(filename).convert('RGBA')
-    colour   = visuals.colours[idx]
     col_im   = Image.new('RGBA',
                        size  = (im.width, im.height),
                        color = colour,
@@ -511,20 +520,10 @@ visuals   = get_visuals(palette_basic,
                          ('wave',   'cyan'),
                          ])
 
-# Set up the stripe images to use.
-# Each element of the list is a list [main_image, top_image]
-
-stripe_ims    = [pattern_stripe_images(i) for i in range(COL_COUNT)]
-no_stripe_ims = no_stripe_images()    # [main_image, top_image]
-
-
 # Assemble all the cards
 
-
-
 stripe_includes = make_stripe_includes()
-
-cards = []
+cards           = []
 
 # 1-stripe cards
 
