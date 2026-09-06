@@ -197,24 +197,6 @@ def paste_stripes(maker: CardMaker, idx: int, include: bool):
                 )
 
 
-def plain_stripe_images(idx: int) -> (Image, Image):
-    """
-    Make two plain stripe images for this index - a main one and a top one.
-    """
-    thickness_px     = int(base_maker.to_px(6.5))
-    thickness_top_px = int(base_maker.to_px(1.4))
-
-    im0 = Image.new(mode = 'RGBA',
-                    size = (base_maker.width_with_gutters_px, thickness_px),
-                    color = visuals.colours[idx],
-                    )
-    im1 = Image.new(mode = 'RGBA',
-                    size = (base_maker.width_with_gutters_px, thickness_top_px),
-                    color = visuals.colours[idx],
-                    )
-    return (im0, im1)
-
-
 def get_visuals(palette: dict[str, tuple[int,int,int,int]],
                 shape_colour: list[tuple[str, str]]) -> tuple[
                         tuple[int,int,int,int],
