@@ -514,7 +514,7 @@ class PerColourScheme_4Stripes_3Doubles:
 scheme    = PerColourScheme_4Stripes_3Doubles
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_basic,
-                        [('zigzag', 'magenta'),
+                        [('ribbon', 'magenta'),
                          ('holes',  'yellow'),
                          ('plain',  'green'),
                          ('wave',   'cyan'),
