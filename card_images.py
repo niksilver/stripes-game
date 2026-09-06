@@ -516,9 +516,9 @@ scheme    = PerColourScheme_4Stripes_3Doubles
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('ribbon', 'red'),
-                         ('rope',  'yellow'),
-                         ('waves',  'blue'),
-                         ('peas',  'green'),
+                         ('rope',   'yellow'),
+                         ('sea',    'blue'),
+                         ('dots',   'green'),
                          ])
 
 # Assemble all the cards
