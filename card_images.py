@@ -8,12 +8,19 @@ from PIL import ImageChops
 from gamehelper.card_maker import CardMaker
 
 
+palette_basic = {'magenta': (212,   0, 212, 220),
+                 'yellow':  (212, 212,   0, 220),
+                 'green':   (  0, 192,   0, 220),
+                 'blue':    ( 96,  96, 255, 220),
+                 'cyan':    (  0, 212, 212, 220),
+                 }
 stripe_colours = [(212,   0, 212, 220),    # Magenta
                   (212, 212,   0, 220),    # Yellow
                   (  0, 192,   0, 220),    # Green
                   ( 96,  96, 255, 220),    # Blue
                   (  0, 212, 212, 220),    # Cyan
                   ]
+
 COL_COUNT      = None    # Set in the scheme
 
 
@@ -199,13 +206,40 @@ def plain_stripe_images(idx: int) -> (Image, Image):
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
-                    color = stripe_colours[idx],
+                    color = visuals.colour[idx],
                     )
     im1 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_top_px),
-                    color = stripe_colours[idx],
+                    color = visuals.colour[idx],
                     )
     return (im0, im1)
+
+
+def get_visuals(palette: dict[str, tuple[int,int,int,int]],
+                shape_colour: list[tuple[str, str]]) -> tuple[
+                        tuple[int,int,int,int],
+                        dict[str, str]]:
+    """
+    - `palette`: Map of colour name (string) to a 4-tuple RGBA value.
+    - `shape_colour`: List of pairs: shape name and colour. The shape
+      name will transform to `assets/NAME.png`.
+
+    Returns a dict with keys `colour` and `filename`:
+    - `colour`: A list of RGBA values, with index 0 being the colour of the top stripe.
+    - `filename`: A list of filenames (strings), with index 0 being the image asset
+      of the top stripe.
+    """
+
+    class Visuals:
+        colour = []
+        filename = []
+    out = Visuals()
+
+    for (shape, colour) in shape_colour:
+        out.colour.append(palette[colour])
+        out.filename.append(f'assets/{shape}.png')
+
+    return out
 
 
 def pattern_stripe_images(idx: int) -> (Image, Image):
@@ -215,15 +249,10 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
 
-    ims    = ['assets/zigzag.png',
-              'assets/holes.png',
-              'assets/plain.png',
-              'assets/wave.png',
-              'assets/dots.png',
-              ]
-    im     = Image.open(ims[idx]).convert('RGBA')
-    colour = stripe_colours[idx]
-    col_im = Image.new('RGBA',
+    filename = visuals.filename[idx]
+    im       = Image.open(filename).convert('RGBA')
+    colour   = visuals.colour[idx]
+    col_im   = Image.new('RGBA',
                        size  = (im.width, im.height),
                        color = colour,
                        )
@@ -489,15 +518,21 @@ class PerColourScheme_4Stripes_3Doubles:
         return [str(s) for s in scores]
 
 
+# Define our visual style
+
+visuals = get_visuals(palette_basic,
+                      [('zigzag', 'magenta'),
+                       ('holes',  'yellow'),
+                       ('plain',  'green'),
+                       ('wave',   'cyan'),
+                       ])
 
 # Set up the stripe images to use
-
 
 stripe_ims    = [pattern_stripe_images(0),    # [main_image, top_image]
                  pattern_stripe_images(1),
                  pattern_stripe_images(2),
                  pattern_stripe_images(3),
-                 pattern_stripe_images(4),
                  ]
 no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 
