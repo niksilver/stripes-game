@@ -517,7 +517,7 @@ visuals   = get_visuals(palette_basic,
                         [('ribbon', 'magenta'),
                          ('holes',  'yellow'),
                          ('plain',  'green'),
-                         ('wave',   'cyan'),
+                         ('waves',  'cyan'),
                          ])
 
 # Assemble all the cards
