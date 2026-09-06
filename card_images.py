@@ -516,8 +516,8 @@ COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_basic,
                         [('ribbon', 'magenta'),
                          ('holes',  'yellow'),
-                         ('plain',  'green'),
-                         ('waves',  'cyan'),
+                         ('waves',  'green'),
+                         ('zap',    'cyan'),
                          ])
 
 # Assemble all the cards
