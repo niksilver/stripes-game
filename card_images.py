@@ -240,7 +240,7 @@ def pattern_stripe_images(filename: str, colour: (int,int,int,int)) -> (Image, I
     Make two plain stripe images - a main one and a top one.
     """
     thickness_px     = int(base_maker.to_px(6.5))
-    thickness_top_px = int(base_maker.to_px(1.4))
+    thickness_top_px = int(base_maker.to_px(1.2))
 
     im       = Image.open(filename).convert('RGBA')
     col_im   = Image.new('RGBA',
