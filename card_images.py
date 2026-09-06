@@ -18,6 +18,7 @@ palette_nik_colourblind = {
         'red':    (216,  27,  96, 245),
         'blue':   ( 30, 136, 229, 245),
         'yellow': (255, 193,   7, 245),
+        'brown':  (175,  88,  10, 245),
         'green':  (101, 181,   4, 245),
         }
 
@@ -516,8 +517,8 @@ COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('ribbon', 'red'),
                          ('holes',  'yellow'),
-                         ('waves',  'green'),
-                         ('zap',    'blue'),
+                         ('peas',  'green'),
+                         ('rope',   'blue'),
                          ])
 
 # Assemble all the cards
