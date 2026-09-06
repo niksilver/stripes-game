@@ -14,12 +14,12 @@ palette_basic = {'magenta': (212,   0, 212, 220),
                  'blue':    ( 96,  96, 255, 220),
                  'cyan':    (  0, 212, 212, 220),
                  }
-stripe_colours = [(212,   0, 212, 220),    # Magenta
-                  (212, 212,   0, 220),    # Yellow
-                  (  0, 192,   0, 220),    # Green
-                  ( 96,  96, 255, 220),    # Blue
-                  (  0, 212, 212, 220),    # Cyan
-                  ]
+palette_nik_colourblind = {
+        'red':    (216,  27,  96, 255),
+        'blue':   ( 30, 136, 229, 255),
+        'yellow': (255, 193,   7, 255),
+        'green':  (101, 181,   4, 255),
+        }
 
 COL_COUNT      = None    # Set in the scheme
 
@@ -513,11 +513,11 @@ class PerColourScheme_4Stripes_3Doubles:
 
 scheme    = PerColourScheme_4Stripes_3Doubles
 COL_COUNT = scheme.COL_COUNT
-visuals   = get_visuals(palette_basic,
-                        [('ribbon', 'magenta'),
+visuals   = get_visuals(palette_nik_colourblind,
+                        [('ribbon', 'red'),
                          ('holes',  'yellow'),
                          ('waves',  'green'),
-                         ('zap',    'cyan'),
+                         ('zap',    'blue'),
                          ])
 
 # Assemble all the cards
