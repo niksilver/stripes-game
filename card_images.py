@@ -15,10 +15,10 @@ palette_basic = {'magenta': (212,   0, 212, 220),
                  'cyan':    (  0, 212, 212, 220),
                  }
 palette_nik_colourblind = {
-        'red':    (216,  27,  96, 255),
-        'blue':   ( 30, 136, 229, 255),
-        'yellow': (255, 193,   7, 255),
-        'green':  (101, 181,   4, 255),
+        'red':    (216,  27,  96, 245),
+        'blue':   ( 30, 136, 229, 245),
+        'yellow': (255, 193,   7, 245),
+        'green':  (101, 181,   4, 245),
         }
 
 COL_COUNT      = None    # Set in the scheme
