@@ -206,11 +206,11 @@ def plain_stripe_images(idx: int) -> (Image, Image):
 
     im0 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_px),
-                    color = visuals.colour[idx],
+                    color = visuals.colours[idx],
                     )
     im1 = Image.new(mode = 'RGBA',
                     size = (base_maker.width_with_gutters_px, thickness_top_px),
-                    color = visuals.colour[idx],
+                    color = visuals.colours[idx],
                     )
     return (im0, im1)
 
@@ -224,20 +224,20 @@ def get_visuals(palette: dict[str, tuple[int,int,int,int]],
     - `shape_colour`: List of pairs: shape name and colour. The shape
       name will transform to `assets/NAME.png`.
 
-    Returns a dict with keys `colour` and `filename`:
-    - `colour`: A list of RGBA values, with index 0 being the colour of the top stripe.
-    - `filename`: A list of filenames (strings), with index 0 being the image asset
+    Returns an object with properties `colours` and `filenames`:
+    - `colours`: A list of RGBA values, with index 0 being the colour of the top stripe.
+    - `filenames`: A list of filenames (strings), with index 0 being the image asset
       of the top stripe.
     """
 
     class Visuals:
-        colour = []
-        filename = []
+        colours = []
+        filenames = []
     out = Visuals()
 
     for (shape, colour) in shape_colour:
-        out.colour.append(palette[colour])
-        out.filename.append(f'assets/{shape}.png')
+        out.colours.append(palette[colour])
+        out.filenames.append(f'assets/{shape}.png')
 
     return out
 
@@ -249,9 +249,9 @@ def pattern_stripe_images(idx: int) -> (Image, Image):
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.4))
 
-    filename = visuals.filename[idx]
+    filename = visuals.filenames[idx]
     im       = Image.open(filename).convert('RGBA')
-    colour   = visuals.colour[idx]
+    colour   = visuals.colours[idx]
     col_im   = Image.new('RGBA',
                        size  = (im.width, im.height),
                        color = colour,
@@ -518,31 +518,28 @@ class PerColourScheme_4Stripes_3Doubles:
         return [str(s) for s in scores]
 
 
-# Define our visual style
+# Define our card scheme and visual style
 
-visuals = get_visuals(palette_basic,
-                      [('zigzag', 'magenta'),
-                       ('holes',  'yellow'),
-                       ('plain',  'green'),
-                       ('wave',   'cyan'),
-                       ])
+scheme    = PerColourScheme_4Stripes_3Doubles
+COL_COUNT = scheme.COL_COUNT
+visuals   = get_visuals(palette_basic,
+                        [('zigzag', 'magenta'),
+                         ('holes',  'yellow'),
+                         ('plain',  'green'),
+                         ('wave',   'cyan'),
+                         ])
 
-# Set up the stripe images to use
+# Set up the stripe images to use.
+# Each element of the list is a list [main_image, top_image]
 
-stripe_ims    = [pattern_stripe_images(0),    # [main_image, top_image]
-                 pattern_stripe_images(1),
-                 pattern_stripe_images(2),
-                 pattern_stripe_images(3),
-                 ]
+stripe_ims    = [pattern_stripe_images(i) for i in range(COL_COUNT)]
 no_stripe_ims = no_stripe_images()    # [main_image, top_image]
 
 
 # Assemble all the cards
 
 
-scheme = PerColourScheme_4Stripes_3Doubles
 
-COL_COUNT       = scheme.COL_COUNT
 stripe_includes = make_stripe_includes()
 
 cards = []
