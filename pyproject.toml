@@ -1,0 +1,12 @@
+[project]
+name = "stripes-game"
+version = "0.1.0"
+description = "Make pretty lines"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gamehelper",
+]
+
+[tool.uv.sources]
+gamehelper = { path = "../game-helper", editable = true }
