@@ -251,12 +251,16 @@ def pattern_stripe_images(filename: str, colour: (int,int,int,int)) -> (Image, I
                        )
     im.paste(col_im, mask = im)
 
-    # Main stripe image
+    # Main stripe image.
+    # This has to fit into the main card area and repeat like that,
+    # but also extend into the gutter. It will be placed from the
+    # centre point
 
-    width_px  = base_maker.width_with_gutters_px
+    width_px  = base_maker.width_px
     height_px = int(thickness_px * 1.2)
 
     im0 = im.resize(size = (width_px, height_px))
+    im0 = gameutils.repeat(im0, 3)
 
     # Small top stripe image
 
