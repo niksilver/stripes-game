@@ -5,7 +5,8 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageChops
 
-from gamehelper.card_maker import CardMaker
+from   gamehelper.card_maker import CardMaker
+import gamehelper.utils      as gameutils
 
 
 palette_basic = {'magenta': (212,   0, 212, 220),
@@ -259,10 +260,7 @@ def pattern_stripe_images(filename: str, colour: (int,int,int,int)) -> (Image, I
 
     # Small top stripe image
 
-    repeats   = 4
-    im_canvas = Image.new('RGBA', (im.width * repeats, im.height))
-    for i in range(repeats):
-        im_canvas.paste(im, box = (im.width * i, 0))
+    im_canvas = gameutils.repeat(im, 4)
 
     rescale = 0.25
     width_px  = int(im_canvas.width * rescale)
