@@ -244,12 +244,9 @@ def pattern_stripe_images(filename: str, colour: (int,int,int,int)) -> (Image, I
     thickness_px     = int(base_maker.to_px(6.5))
     thickness_top_px = int(base_maker.to_px(1.2))
 
-    im       = Image.open(filename).convert('RGBA')
-    col_im   = Image.new('RGBA',
-                       size  = (im.width, im.height),
-                       color = colour,
-                       )
-    im.paste(col_im, mask = im)
+    im = gameutils.colour_mask_image(filename,
+                                     colour = colour,
+                                     )
 
     # Main stripe image.
     # This has to fit into the main card area and repeat like that,
