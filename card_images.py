@@ -509,9 +509,44 @@ class PerColourScheme_4Stripes_3Doubles:
         return [str(s) for s in scores]
 
 
+class PerColourScheme_4Stripes_SinglesBothEnds:
+    """
+    Four stripes, with 1-stripe card at both ends. 38 cards total.
+    Algorithm otherwise like PerColourScheme_4Stripes_4Doubles
+    """
+
+    COL_COUNT = 4
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        scores = [1, 2, 13, 14]
+        return [str(s) for s in scores]
+
+
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        _ = 0
+        lookup = [[  [_,_,_], [3,4,5], [6,7,8],   [9,10,11]],
+                  [  [_,_,_], [_,_,_], [9,10,11], [6,7,8]],
+                  [  [_,_,_], [_,_,_], [_,_,_],   [3,4,5]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
+
+
 # Define our card scheme and visual style
 
-scheme    = PerColourScheme_4Stripes_3Doubles
+# scheme    = PerColourScheme_4Stripes_3Doubles
+scheme    = PerColourScheme_4Stripes_SinglesBothEnds
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('ribbon', 'red'),
