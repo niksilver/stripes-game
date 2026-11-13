@@ -522,7 +522,7 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
         Given a 1-stripe pattern, return the scores that such a card
         would have.
         """
-        scores = [1, 2, 13, 14]
+        scores = [1, 2, 12, 13, 14]
         return [str(s) for s in scores]
 
 
