@@ -545,14 +545,14 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
 
 # Define our card scheme and visual style
 
-# scheme    = PerColourScheme_4Stripes_3Doubles
-scheme    = PerColourScheme_4Stripes_SinglesBothEnds
+scheme    = PerColourScheme_4Stripes_3Doubles
+# scheme    = PerColourScheme_4Stripes_SinglesBothEnds
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
-                        [('ribbon', 'red'),
-                         ('rope',   'yellow'),
-                         ('waves',  'blue'),
-                         ('dots',   'green'),
+                        [('petals',  'red'),
+                         ('braid',   'yellow'),
+                         ('ribbon',  'blue'),
+                         ('emerald', 'green'),
                          ])
 
 # Assemble all the cards
