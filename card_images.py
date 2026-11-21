@@ -555,20 +555,20 @@ def score_to_symbol(text: str) -> str:
     """
     match int(text):
         case 1: return '|'
-        case 2: return 'v'
+        case 2: return '1'
         case 3: return 'x'
 
         case 4: return '|'
-        case 5: return 'v'
+        case 5: return '2'
         case 6: return 'x'
 
         case 7: return '|'
-        case 8: return 'v'
+        case 8: return '3'
         case 9: return 'x'
 
-        case 10: return '1'
-        case 11: return '2'
-        case 12: return '3'
+        case 10: return 'v'
+        case 11: return 'v'
+        case 12: return 'v'
         case 13: return '4'
         case 14: return '5'
 
