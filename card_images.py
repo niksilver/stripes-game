@@ -547,30 +547,29 @@ def score_to_symbol(text: str) -> str:
     """
     Convert a string '1' to `'14' to a symbol.
     Symbols are:
-    - `]` - Must be the last on the right, extend to the left.
-    - `[` - Must be the first on the left, extend to the right.
-    - `|` - Can join (on either side).
+    - `]` - Must be the last card
+    - `|` - Can immediately take any other line and add it to the right of this.
     - `v` - Can be inserted in the middle
     - `x` - Cannot be stolen.
     """
     match int(text):
-        case 1: return '['
-        case 2: return ']'
-        case 3: return 'v'
+        case 1: return '|'
+        case 2: return '1'
+        case 3: return 'x'
 
-        case 4: return ''
-        case 5: return 'x'
-        case 6: return 'v'
+        case 4: return '|'
+        case 5: return '2'
+        case 6: return 'x'
 
-        case 7: return ''
-        case 8: return 'x'
-        case 9: return 'v'
+        case 7: return '|'
+        case 8: return '3'
+        case 9: return 'x'
 
-        case 10: return '|'
-        case 11: return '|'
-        case 12: return '|'
-        case 13: return ''
-        case 14: return 'x'
+        case 10: return 'v'
+        case 11: return 'v'
+        case 12: return '4'
+        case 13: return '5'
+        case 14: return ']'
 
 
 # Define our card scheme and visual style
