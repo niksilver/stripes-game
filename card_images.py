@@ -543,6 +543,36 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
         return [str(s) for s in scores]
 
 
+def score_to_symbol(text: str) -> str:
+    """
+    Convert a string '1' to `'14' to a symbol.
+    Symbols are:
+    - `]` - Must be the last on the right, extend to the left.
+    - `[` - Must be the first on the left, extend to the right.
+    - `|` - Can join (on either side).
+    - `v` - Can be inserted in the middle
+    - `x` - Cannot be stolen.
+    """
+    match int(text):
+        case 1: return '['
+        case 2: return ']'
+        case 3: return 'v'
+
+        case 4: return ''
+        case 5: return 'x'
+        case 6: return 'v'
+
+        case 7: return ''
+        case 8: return 'x'
+        case 9: return 'v'
+
+        case 10: return '|'
+        case 11: return '|'
+        case 12: return '|'
+        case 13: return ''
+        case 14: return 'x'
+
+
 # Define our card scheme and visual style
 
 scheme    = PerColourScheme_4Stripes_3Doubles
@@ -564,12 +594,14 @@ cards           = []
 
 for include in stripe_includes[1]:
     for score in scheme.one_stripe_scores(include):
-        card = make_card(score, include)
+        text = score_to_symbol(score)
+        card = make_card(text, include)
         cards.append(card)
 
 # 2-stripe cards
 
 for include in stripe_includes[2]:
     for score in scheme.two_stripe_scores(include):
-        card = make_card(score, include)
+        text = score_to_symbol(score)
+        card = make_card(text, include)
         cards.append(card)
