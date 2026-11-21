@@ -509,6 +509,40 @@ class PerColourScheme_4Stripes_3Doubles:
         return [str(s) for s in scores]
 
 
+class PerColourScheme_4Stripes_3Doubles_7Singles:
+    """
+    Four stripes, with three of each 2-stripe card. 46 cards total.
+    Algorithm otherwise like PerColourScheme_4Stripes_4Doubles
+    """
+
+    COL_COUNT = 4
+
+    def one_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 1-stripe pattern, return the scores that such a card
+        would have.
+        """
+        scores = [10, 11, 12, 13, 14, 15, 16]
+        return [str(s) for s in scores]
+
+
+    def two_stripe_scores(include: list[bool]) -> str:
+        """
+        Given a 2-stripe pattern, return the scores that such a card
+        would have.
+        For details see design diary of 2026-07-15 (new numbering).
+        """
+        _ = 0
+        lookup = [[  [_,_,_], [1,2,3], [4,5,6], [7,8,9]],
+                  [  [_,_,_], [_,_,_], [7,8,9], [4,5,6]],
+                  [  [_,_,_], [_,_,_], [_,_,_], [1,2,3]],
+                 ]
+        row = include.index(True)
+        col = include.index(True, row + 1)
+        scores = lookup[row][col]
+        return [str(s) for s in scores]
+
+
 class PerColourScheme_4Stripes_SinglesBothEnds:
     """
     Four stripes, with 1-stripe card at both ends. 38 cards total.
@@ -545,7 +579,7 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
 
 def score_to_symbol(text: str) -> str:
     """
-    Convert a string '1' to `'14' to a symbol.
+    Convert a string '1' to `'16' to a symbol.
     Symbols are:
     - `|` - Can immediately take any other line and add it to the right of this.
     - `v` - Can be inserted in the middle
@@ -568,13 +602,15 @@ def score_to_symbol(text: str) -> str:
         case 10: return 'v'
         case 11: return 'v'
         case 12: return 'v'
-        case 13: return '4'
-        case 14: return '5'
+        case 13: return 'v'
+        case 14: return '4'
+        case 15: return '5'
+        case 16: return '6'
 
 
 # Define our card scheme and visual style
 
-scheme    = PerColourScheme_4Stripes_3Doubles
+scheme    = PerColourScheme_4Stripes_3Doubles_7Singles
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('petals',  'red'),
