@@ -549,22 +549,21 @@ def score_to_symbol(text: str) -> str:
     Symbols are:
     - `|` - Can immediately take any other line and add it to the right of this.
     - `v` - Can be inserted in the middle
-    - `x` - Cannot be stolen.
     - `1` to `5` - Highest player of these leads next, but has a chance to steal
       and give up that lead.
     """
     match int(text):
-        case 1: return '|'
-        case 2: return '1'
-        case 3: return 'x'
+        case 1: return '1'
+        case 2: return '|'
+        case 3: return '|'
 
-        case 4: return '|'
-        case 5: return '2'
-        case 6: return 'x'
+        case 4: return '2'
+        case 5: return '|'
+        case 6: return '|'
 
-        case 7: return '|'
-        case 8: return '3'
-        case 9: return 'x'
+        case 7: return '3'
+        case 8: return '|'
+        case 9: return '|'
 
         case 10: return 'v'
         case 11: return 'v'
@@ -576,7 +575,6 @@ def score_to_symbol(text: str) -> str:
 # Define our card scheme and visual style
 
 scheme    = PerColourScheme_4Stripes_3Doubles
-# scheme    = PerColourScheme_4Stripes_SinglesBothEnds
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('petals',  'red'),
