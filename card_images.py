@@ -579,7 +579,7 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
 
 def score_to_symbol(text: str) -> str:
     """
-    Convert a string '1' to `'16' to a symbol.
+    Convert a string '1' to `'14' to a symbol.
     Symbols are:
     - `|` - Can immediately take any other line and add it to the right of this.
     - `v` - Can be inserted in the middle
@@ -602,15 +602,13 @@ def score_to_symbol(text: str) -> str:
         case 10: return 'v'
         case 11: return 'v'
         case 12: return 'v'
-        case 13: return 'v'
-        case 14: return '4'
-        case 15: return '5'
-        case 16: return '6'
+        case 13: return '4'
+        case 14: return '5'
 
 
 # Define our card scheme and visual style
 
-scheme    = PerColourScheme_4Stripes_3Doubles_7Singles
+scheme    = PerColourScheme_4Stripes_3Doubles
 COL_COUNT = scheme.COL_COUNT
 visuals   = get_visuals(palette_nik_colourblind,
                         [('petals',  'red'),
