@@ -376,17 +376,17 @@ class SingleSequenceScheme_5Stripes:
 
     COL_COUNT = 5
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         idx = include.index(True)
         numbers = [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-    def two_stripe_numbers(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 2-stripe pattern, return the numbers that such a card
         would have.
@@ -400,7 +400,7 @@ class SingleSequenceScheme_5Stripes:
         row = include.index(True)
         col = include.index(True, row + 1)
         numbers = lookup[row][col]
-        return [str(s) for s in numbers]
+        return numbers
 
 
 class PerColourScheme_5Stripes_Problem:
@@ -432,16 +432,16 @@ class PerColourScheme_5Stripes_Problem:
 
     COL_COUNT = 5
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         numbers = [9, 10, 11, 12, 13]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-    def two_stripe_numbers(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 2-stripe pattern, return the numbers that such a card
         would have.
@@ -455,7 +455,7 @@ class PerColourScheme_5Stripes_Problem:
         row = include.index(True)
         col = include.index(True, row + 1)
         numbers = lookup[row][col]
-        return [str(s) for s in numbers]
+        return numbers
 
 
 class PerColourScheme_4Stripes_4Doubles:
@@ -483,16 +483,16 @@ class PerColourScheme_4Stripes_4Doubles:
 
     COL_COUNT = 4
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         numbers = [13, 14, 15, 16, 17]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-    def two_stripe_numbers(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 2-stripe pattern, return the numbers that such a card
         would have.
@@ -506,7 +506,7 @@ class PerColourScheme_4Stripes_4Doubles:
         row = include.index(True)
         col = include.index(True, row + 1)
         numbers = lookup[row][col]
-        return [str(s) for s in numbers]
+        return numbers
 
 
 class PerColourScheme_4Stripes_3Doubles:
@@ -517,16 +517,16 @@ class PerColourScheme_4Stripes_3Doubles:
 
     COL_COUNT = 4
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         numbers = [10, 11, 12, 13, 14, 15]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-    def two_stripe_numbers(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 2-stripe pattern, return the numbers that such a card
         would have.
@@ -540,7 +540,7 @@ class PerColourScheme_4Stripes_3Doubles:
         row = include.index(True)
         col = include.index(True, row + 1)
         numbers = lookup[row][col]
-        return [str(s) for s in numbers]
+        return numbers
 
 
 class PerColourScheme_4Stripes_3Doubles_7Singles:
@@ -551,13 +551,13 @@ class PerColourScheme_4Stripes_3Doubles_7Singles:
 
     COL_COUNT = 4
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         numbers = [10, 11, 12, 13, 14, 15, 16]
-        return [str(s) for s in numbers]
+        return numbers
 
 
     def two_stripe_numbers(include: list[bool]) -> str:
@@ -585,16 +585,16 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
 
     COL_COUNT = 4
 
-    def one_stripe_numbers(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         numbers = [1, 2, 12, 13, 14]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-    def two_stripe_numbers(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> int:
         """
         Given a 2-stripe pattern, return the numbers that such a card
         would have.
@@ -608,19 +608,19 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
         row = include.index(True)
         col = include.index(True, row + 1)
         numbers = lookup[row][col]
-        return [str(s) for s in numbers]
+        return numbers
 
 
-def number_to_symbol(text: str) -> str:
+def number_to_symbol(number: int) -> str:
     """
-    Convert a string '1' to `'14' to a symbol.
+    Convert an int 1 to 15 to a symbol (text).
     Symbols are:
     - `|` - Can immediately take any other line and add it to the right of this.
     - `v` - Can be inserted in the middle
     - `1` to `5` - Highest player of these leads next, but has a chance to steal
       and give up that lead.
     """
-    match int(text):
+    match number:
         case 1: return '1'
         case 2: return '|'
         case 3: return '|'
