@@ -1,4 +1,5 @@
 import math
+import os.path
 
 from PIL import Image
 from PIL import ImageDraw
@@ -93,7 +94,7 @@ def make_stripe_includes() -> list[list[list[bool]]]:
 
 # Make cards and their images
 
-def make_card(content: str | Image.Image, include: list[bool]) -> CardMaker:
+def make_card(content: str | tuple[Image.Image, Image.Image], include: list[bool]) -> CardMaker:
     """
     Make a card image with the given text (or image) and each stripe included or not.
     """
@@ -104,13 +105,12 @@ def make_card(content: str | Image.Image, include: list[bool]) -> CardMaker:
     for idx, include in enumerate(include):
         paste_stripes(maker, idx, include)
 
-
     # Insert the text... or image
 
     if isinstance(content, str):
         maker = add_card_text(content, maker)
     else:
-        maker = add_card_symbol_image(content, maker)
+        maker = add_card_symbol_images(content, maker)
 
     return maker
 
@@ -145,22 +145,24 @@ def add_card_text(text: str, maker: CardMaker) -> CardMaker:
     return maker
 
 
-def add_card_symbol_image(im: Image.Image, maker: CardMaker) -> CardMaker:
+def add_card_symbol_images(ims: (Image.Image, Image.Image), maker: CardMaker) -> CardMaker:
     """
     Put an image into the middle of a card and return the updated version.
     """
 
-    maker.paste(im,
+    (im_large, im_small) = ims
+
+    maker.paste(im_large,
                 center = maker.width / 2,
                 middle = mid_mm,
                 height = 34,
                 )
-    maker.paste(im,
+    maker.paste(im_small,
                 center = 7,
                 middle = mid_top_mm,
                 height = 8,
                 )
-    maker.paste(im,
+    maker.paste(im_small,
                 center = maker.width - 7,
                 middle = mid_top_mm,
                 height = 8,
@@ -650,32 +652,50 @@ def number_to_symbol(number: int) -> str:
         case 15: return '6'
 
 
-def symbol_text_to_image(text: str) -> Image.Image:
+def symbol_text_to_images(text: str, small: bool = False) -> (Image.Image, Image.Image):
     """
-    Convert a string for the text into an image.
+    Convert a string for the text into a pair of images: large and small.
+    The small version isn't resized.
     """
 
-    def image_of(base_filename: str) -> Image.Image:
-        im = symbol_filename_cache.get(base_filename)
-        if im is not None:
-            return im
+    def images_of(base_filename: str) -> (Image.Image, Image.Image):
+        """
+        `base_filename` is something like `pin.png`.
+        Returns the image, and a version of the image for reduced size in the corner.
+        This will be for example `pin_small.png` if one exists or `pin.png` otherwise.
+        """
 
-        im = Image.open(f'assets/{base_filename}')
-        symbol_filename_cache[base_filename] = im
-        return im
+        large_filename = 'assets/' + base_filename
+        small_filename = 'assets/' + base_filename[:-4] + '_small.png'
+
+        im_large = symbol_filename_cache.get(base_filename)
+        im_small = symbol_filename_cache.get(base_filename)
+        if (im_large is not None) and (im_small is not None):
+            return (im_large, im_small)
+
+        im_large = Image.open(large_filename)
+        symbol_filename_cache[large_filename] = im_large
+
+        if os.path.isfile(small_filename):
+            im_small = Image.open(small_filename)
+        else:
+            im_small = im_large
+        symbol_filename_cache[small_filename] = im_small
+
+        return (im_large, im_small)
 
 
     match text:
-        case '1': return image_of('buttons_1.png')
-        case '2': return image_of('buttons_2.png')
-        case '3': return image_of('buttons_3.png')
+        case '1': return images_of('buttons_1.png')
+        case '2': return images_of('buttons_2.png')
+        case '3': return images_of('buttons_3.png')
 
-        case '4': return image_of('buttons_4.png')
-        case '5': return image_of('buttons_5.png')
-        case '6': return image_of('buttons_6.png')
+        case '4': return images_of('buttons_4.png')
+        case '5': return images_of('buttons_5.png')
+        case '6': return images_of('buttons_6.png')
 
-        case '|': return image_of('pin.png')
-        case 'v': return image_of('scissors.png')
+        case '|': return images_of('pin.png')
+        case 'v': return images_of('scissors.png')
 
 
 # Define our card scheme and visual style
@@ -699,8 +719,8 @@ cards           = []
 for include in stripe_includes[1]:
     for number in scheme.one_stripe_numbers(include):
         text = number_to_symbol(number)
-        im   = symbol_text_to_image(text)
-        card = make_card(im, include)
+        ims  = symbol_text_to_images(text)
+        card = make_card(ims, include)
         cards.append(card)
 
 # 2-stripe cards
@@ -708,6 +728,6 @@ for include in stripe_includes[1]:
 for include in stripe_includes[2]:
     for number in scheme.two_stripe_numbers(include):
         text = number_to_symbol(number)
-        im   = symbol_text_to_image(text)
-        card = make_card(im, include)
+        ims  = symbol_text_to_images(text)
+        card = make_card(ims, include)
         cards.append(card)

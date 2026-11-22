@@ -11,7 +11,7 @@ num_cards      = len(cardims.cards)
 
 # Render the cards
 
-sheet = PDFSheets(card_width  = 56,    ## mm
+sheet = PDFSheets(card_width  = 57,    ## mm
                   card_height = 88,    ## mm
                   gutter      = 4,
                   include_backs = False,
