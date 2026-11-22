@@ -48,7 +48,7 @@ base_maker.font_name('Number',     family = 'DejaVu Sans', size = 40)
 base_maker.font_name('Number top', family = 'DejaVu Sans', size = 8)
 
 
-# Cache for central symbols' base filenames and their images
+# Cache for symbols' base filenames and their images
 
 symbol_filename_cache = {}
 
@@ -108,14 +108,14 @@ def make_card(content: str | Image.Image, include: list[bool]) -> CardMaker:
     # Insert the text... or image
 
     if isinstance(content, str):
-        maker = add_card_central_text(content, maker)
+        maker = add_card_text(content, maker)
     else:
-        maker = add_card_central_image(content, maker)
+        maker = add_card_symbol(content, maker)
 
     return maker
 
 
-def add_card_central_text(text: str, maker: CardMaker) -> CardMaker:
+def add_card_text(text: str, maker: CardMaker) -> CardMaker:
     """
     Put some text into the middle of a card and return the updated version.
     """
@@ -145,7 +145,7 @@ def add_card_central_text(text: str, maker: CardMaker) -> CardMaker:
     return maker
 
 
-def add_card_central_image(im: Image.Image, maker: CardMaker) -> CardMaker:
+def add_card_symbol(im: Image.Image, maker: CardMaker) -> CardMaker:
     """
     Put an image into the middle of a card and return the updated version.
     """
@@ -365,7 +365,7 @@ def grey_stripe_images() -> (Image, Image):
     return (im0, im1)
 
 
-# Scheme to put the scores on the cards
+# Scheme to put the numbers on the cards
 
 
 class SingleSequenceScheme_5Stripes:
@@ -376,19 +376,19 @@ class SingleSequenceScheme_5Stripes:
 
     COL_COUNT = 5
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
         idx = include.index(True)
-        scores = [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
-        return [str(s) for s in scores]
+        numbers = [idx+21, idx+21+5, idx+21+5+5, 45-5-idx, 45-idx]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -399,8 +399,8 @@ class SingleSequenceScheme_5Stripes:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
 class PerColourScheme_5Stripes_Problem:
@@ -432,18 +432,18 @@ class PerColourScheme_5Stripes_Problem:
 
     COL_COUNT = 5
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
-        scores = [9, 10, 11, 12, 13]
-        return [str(s) for s in scores]
+        numbers = [9, 10, 11, 12, 13]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -454,8 +454,8 @@ class PerColourScheme_5Stripes_Problem:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
 class PerColourScheme_4Stripes_4Doubles:
@@ -483,18 +483,18 @@ class PerColourScheme_4Stripes_4Doubles:
 
     COL_COUNT = 4
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
-        scores = [13, 14, 15, 16, 17]
-        return [str(s) for s in scores]
+        numbers = [13, 14, 15, 16, 17]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -505,8 +505,8 @@ class PerColourScheme_4Stripes_4Doubles:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
 class PerColourScheme_4Stripes_3Doubles:
@@ -517,18 +517,18 @@ class PerColourScheme_4Stripes_3Doubles:
 
     COL_COUNT = 4
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
-        scores = [10, 11, 12, 13, 14, 15]
-        return [str(s) for s in scores]
+        numbers = [10, 11, 12, 13, 14, 15]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -539,8 +539,8 @@ class PerColourScheme_4Stripes_3Doubles:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
 class PerColourScheme_4Stripes_3Doubles_7Singles:
@@ -551,18 +551,18 @@ class PerColourScheme_4Stripes_3Doubles_7Singles:
 
     COL_COUNT = 4
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
-        scores = [10, 11, 12, 13, 14, 15, 16]
-        return [str(s) for s in scores]
+        numbers = [10, 11, 12, 13, 14, 15, 16]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -573,8 +573,8 @@ class PerColourScheme_4Stripes_3Doubles_7Singles:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
 class PerColourScheme_4Stripes_SinglesBothEnds:
@@ -585,18 +585,18 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
 
     COL_COUNT = 4
 
-    def one_stripe_scores(include: list[bool]) -> str:
+    def one_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 1-stripe pattern, return the scores that such a card
+        Given a 1-stripe pattern, return the numbers that such a card
         would have.
         """
-        scores = [1, 2, 12, 13, 14]
-        return [str(s) for s in scores]
+        numbers = [1, 2, 12, 13, 14]
+        return [str(s) for s in numbers]
 
 
-    def two_stripe_scores(include: list[bool]) -> str:
+    def two_stripe_numbers(include: list[bool]) -> str:
         """
-        Given a 2-stripe pattern, return the scores that such a card
+        Given a 2-stripe pattern, return the numbers that such a card
         would have.
         For details see design diary of 2026-07-15 (new numbering).
         """
@@ -607,11 +607,11 @@ class PerColourScheme_4Stripes_SinglesBothEnds:
                  ]
         row = include.index(True)
         col = include.index(True, row + 1)
-        scores = lookup[row][col]
-        return [str(s) for s in scores]
+        numbers = lookup[row][col]
+        return [str(s) for s in numbers]
 
 
-def score_to_symbol(text: str) -> str:
+def number_to_symbol(text: str) -> str:
     """
     Convert a string '1' to `'14' to a symbol.
     Symbols are:
@@ -641,9 +641,9 @@ def score_to_symbol(text: str) -> str:
         case 15: return '6'
 
 
-def score_symbol_to_image(text: str) -> Image.Image:
+def symbol_text_to_image(text: str) -> Image.Image:
     """
-    Convert a string for the central text into an image.
+    Convert a string for the text into an image.
     """
 
     def image_of(base_filename: str) -> Image.Image:
@@ -688,17 +688,17 @@ cards           = []
 # 1-stripe cards
 
 for include in stripe_includes[1]:
-    for score in scheme.one_stripe_scores(include):
-        text = score_to_symbol(score)
-        im   = score_symbol_to_image(text)
+    for number in scheme.one_stripe_numbers(include):
+        text = number_to_symbol(number)
+        im   = symbol_text_to_image(text)
         card = make_card(im, include)
         cards.append(card)
 
 # 2-stripe cards
 
 for include in stripe_includes[2]:
-    for score in scheme.two_stripe_scores(include):
-        text = score_to_symbol(score)
-        im   = score_symbol_to_image(text)
+    for number in scheme.two_stripe_numbers(include):
+        text = number_to_symbol(number)
+        im   = symbol_text_to_image(text)
         card = make_card(im, include)
         cards.append(card)
