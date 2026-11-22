@@ -110,7 +110,7 @@ def make_card(content: str | Image.Image, include: list[bool]) -> CardMaker:
     if isinstance(content, str):
         maker = add_card_text(content, maker)
     else:
-        maker = add_card_symbol(content, maker)
+        maker = add_card_symbol_image(content, maker)
 
     return maker
 
@@ -145,7 +145,7 @@ def add_card_text(text: str, maker: CardMaker) -> CardMaker:
     return maker
 
 
-def add_card_symbol(im: Image.Image, maker: CardMaker) -> CardMaker:
+def add_card_symbol_image(im: Image.Image, maker: CardMaker) -> CardMaker:
     """
     Put an image into the middle of a card and return the updated version.
     """
@@ -155,7 +155,16 @@ def add_card_symbol(im: Image.Image, maker: CardMaker) -> CardMaker:
                 middle = mid_mm,
                 height = 34,
                 )
-
+    maker.paste(im,
+                center = 7,
+                middle = mid_top_mm,
+                height = 8,
+                )
+    maker.paste(im,
+                center = maker.width - 7,
+                middle = mid_top_mm,
+                height = 8,
+                )
     return maker
 
 
@@ -666,7 +675,7 @@ def symbol_text_to_image(text: str) -> Image.Image:
         case '6': return image_of('buttons_6.png')
 
         case '|': return image_of('buttons_6.png')
-        case 'v': return image_of('buttons_6.png')
+        case 'v': return image_of('scissors.png')
 
 
 # Define our card scheme and visual style
