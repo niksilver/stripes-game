@@ -488,7 +488,7 @@ class PerColourScheme_4Stripes_3Doubles:
         Given a 1-stripe pattern, return the scores that such a card
         would have.
         """
-        scores = [10, 11, 12, 13, 14]
+        scores = [10, 11, 12, 13, 14, 15]
         return [str(s) for s in scores]
 
 
@@ -604,6 +604,7 @@ def score_to_symbol(text: str) -> str:
         case 12: return 'v'
         case 13: return '4'
         case 14: return '5'
+        case 15: return '6'
 
 
 # Define our card scheme and visual style
