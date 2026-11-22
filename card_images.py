@@ -48,6 +48,11 @@ base_maker.font_name('Number',     family = 'DejaVu Sans', size = 40)
 base_maker.font_name('Number top', family = 'DejaVu Sans', size = 8)
 
 
+# Cache for central symbols' base filenames and their images
+
+symbol_filename_cache = {}
+
+
 # Make card include mappings
 
 
@@ -88,9 +93,9 @@ def make_stripe_includes() -> list[list[list[bool]]]:
 
 # Make cards and their images
 
-def make_card(text: str, include: list[bool]) -> CardMaker:
+def make_card(content: str | Image.Image, include: list[bool]) -> CardMaker:
     """
-    Make a card image with the given text and each stripe included or not.
+    Make a card image with the given text (or image) and each stripe included or not.
     """
     maker = base_maker.copy()
 
@@ -99,6 +104,21 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
     for idx, include in enumerate(include):
         paste_stripes(maker, idx, include)
 
+
+    # Insert the text... or image
+
+    if isinstance(content, str):
+        maker = add_card_central_text(content, maker)
+    else:
+        maker = add_card_central_image(content, maker)
+
+    return maker
+
+
+def add_card_central_text(text: str, maker: CardMaker) -> CardMaker:
+    """
+    Put some text into the middle of a card and return the updated version.
+    """
 
     text_closer(maker = maker,
                 text   = text,    # Main
@@ -120,6 +140,20 @@ def make_card(text: str, include: list[bool]) -> CardMaker:
                 middle = mid_top_mm,
                 font   = 'Number top',
                 offset = 2.5,
+                )
+
+    return maker
+
+
+def add_card_central_image(im: Image.Image, maker: CardMaker) -> CardMaker:
+    """
+    Put an image into the middle of a card and return the updated version.
+    """
+
+    maker.paste(im,
+                center = maker.width / 2,
+                middle = mid_mm,
+                height = 34,
                 )
 
     return maker
@@ -607,6 +641,34 @@ def score_to_symbol(text: str) -> str:
         case 15: return '6'
 
 
+def score_symbol_to_image(text: str) -> Image.Image:
+    """
+    Convert a string for the central text into an image.
+    """
+
+    def image_of(base_filename: str) -> Image.Image:
+        im = symbol_filename_cache.get(base_filename)
+        if im is not None:
+            return im
+
+        im = Image.open(f'assets/{base_filename}')
+        symbol_filename_cache[base_filename] = im
+        return im
+
+
+    match text:
+        case '1': return image_of('buttons_1.png')
+        case '2': return image_of('buttons_2.png')
+        case '3': return image_of('buttons_3.png')
+
+        case '4': return image_of('buttons_4.png')
+        case '5': return image_of('buttons_5.png')
+        case '6': return image_of('buttons_6.png')
+
+        case '|': return image_of('buttons_6.png')
+        case 'v': return image_of('buttons_6.png')
+
+
 # Define our card scheme and visual style
 
 scheme    = PerColourScheme_4Stripes_3Doubles
@@ -628,7 +690,8 @@ cards           = []
 for include in stripe_includes[1]:
     for score in scheme.one_stripe_scores(include):
         text = score_to_symbol(score)
-        card = make_card(text, include)
+        im   = score_symbol_to_image(text)
+        card = make_card(im, include)
         cards.append(card)
 
 # 2-stripe cards
@@ -636,5 +699,6 @@ for include in stripe_includes[1]:
 for include in stripe_includes[2]:
     for score in scheme.two_stripe_scores(include):
         text = score_to_symbol(score)
-        card = make_card(text, include)
+        im   = score_symbol_to_image(text)
+        card = make_card(im, include)
         cards.append(card)
