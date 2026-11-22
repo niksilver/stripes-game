@@ -674,7 +674,7 @@ def symbol_text_to_image(text: str) -> Image.Image:
         case '5': return image_of('buttons_5.png')
         case '6': return image_of('buttons_6.png')
 
-        case '|': return image_of('buttons_6.png')
+        case '|': return image_of('pin.png')
         case 'v': return image_of('scissors.png')
 
 
